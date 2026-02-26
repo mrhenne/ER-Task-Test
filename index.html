@@ -210,240 +210,281 @@
         </div>
     </header>
 
-    <!-- Main Grid - Columns wrap draggable panels -->
-    <main class="flex-1 p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-y-auto align-top z-10 relative" id="dashboard-grid">
+    <!-- Main Grid - Columns wrap draggable panels. items-start prevents vertical stretching -->
+    <main class="flex-1 p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-y-auto items-start pb-32 z-10 relative" id="dashboard-grid">
         
         <!-- Column 1 -->
-        <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300" id="col-0">
+        <div class="panel-col flex flex-col gap-4 min-h-[100px] transition-colors duration-300" id="col-0">
             <!-- Panel: Timers -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col max-h-full overflow-hidden" id="panel-timers">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden w-full" id="panel-timers">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-solid fa-stopwatch text-helios-600 dark:text-helios-400"></i> Aktive Timer
                     </h2>
+                    <button onclick="toggleCollapse('panel-timers'); event.stopPropagation();" class="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10">
+                        <i class="fa-solid fa-chevron-up collapse-icon transition-transform duration-300"></i>
+                    </button>
                 </div>
                 
-                <div class="p-4 border-b border-white/40 dark:border-white/10 space-y-3 bg-white/10 dark:bg-white/5">
-                    <input type="text" id="timerPatient" placeholder="Patient / Zimmer / Bett" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
-                    <input list="taskOptions" id="timerTask" placeholder="Was? (z.B. Labor, Re-Eval)" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
-                    <datalist id="taskOptions">
-                        <option value="Labor (allg.)"><option value="Troponin"><option value="CRP"><option value="Abstriche"><option value="Blutkulturen"><option value="BGA"><option value="Urin"><option value="Analgesie Re-Eval"><option value="EKG"><option value="Arztinfo">
-                    </datalist>
-                    <div class="flex gap-2">
-                        <button onclick="addTimer(20)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">20m</button>
-                        <button onclick="addTimer(45)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">45m</button>
-                        <button onclick="addTimer(60)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">60m</button>
-                        <input type="number" id="timerCustom" placeholder="Min" class="w-16 text-sm p-2 rounded-lg glass-input outline-none text-center text-slate-800 dark:text-white shadow-sm">
-                        <button onclick="addCustomTimer()" class="bg-helios-600 hover:bg-helios-500 text-white dark:bg-helios-500/40 dark:hover:bg-helios-500/60 dark:border dark:border-helios-400/50 dark:text-white px-3 py-1 rounded-lg transition shadow-md dark:shadow-[0_0_15px_rgba(16,185,129,0.3)]"><i class="fa-solid fa-plus"></i></button>
+                <div class="panel-content flex flex-col">
+                    <div class="p-4 border-b border-white/40 dark:border-white/10 space-y-3 bg-white/10 dark:bg-white/5">
+                        <input type="text" id="timerPatient" placeholder="Patient / Zimmer / Bett" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
+                        <input list="taskOptions" id="timerTask" placeholder="Was? (z.B. Labor, Re-Eval)" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
+                        <datalist id="taskOptions">
+                            <option value="Labor (allg.)"><option value="Troponin"><option value="CRP"><option value="Abstriche"><option value="Blutkulturen"><option value="BGA"><option value="Urin"><option value="Analgesie Re-Eval"><option value="EKG"><option value="Arztinfo">
+                        </datalist>
+                        <div class="flex gap-2">
+                            <button onclick="addTimer(20)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">20m</button>
+                            <button onclick="addTimer(45)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">45m</button>
+                            <button onclick="addTimer(60)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">60m</button>
+                            <input type="number" id="timerCustom" placeholder="Min" class="w-16 text-sm p-2 rounded-lg glass-input outline-none text-center text-slate-800 dark:text-white shadow-sm">
+                            <button onclick="addCustomTimer()" class="bg-helios-600 hover:bg-helios-500 text-white dark:bg-helios-500/40 dark:hover:bg-helios-500/60 dark:border dark:border-helios-400/50 dark:text-white px-3 py-1 rounded-lg transition shadow-md dark:shadow-[0_0_15px_rgba(16,185,129,0.3)]"><i class="fa-solid fa-plus"></i></button>
+                        </div>
                     </div>
-                </div>
-
-                <div id="timerList" class="p-4 overflow-y-auto flex-1 space-y-4 custom-scrollbar bg-white/5 dark:bg-transparent">
-                    <!-- Timers injected here -->
+                    <div id="timerList" class="p-4 overflow-y-auto max-h-[400px] space-y-4 custom-scrollbar bg-white/5 dark:bg-transparent">
+                        <!-- Timers injected here -->
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Column 2 -->
-        <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300" id="col-1">
+        <div class="panel-col flex flex-col gap-4 min-h-[100px] transition-colors duration-300" id="col-1">
             <!-- Panel: Transports -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden shrink-0" id="panel-transports">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden w-full" id="panel-transports">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-solid fa-bed-pulse text-indigo-500 dark:text-indigo-400"></i> Transport Radar
                     </h2>
+                    <button onclick="toggleCollapse('panel-transports'); event.stopPropagation();" class="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10">
+                        <i class="fa-solid fa-chevron-up collapse-icon transition-transform duration-300"></i>
+                    </button>
                 </div>
                 
-                <div class="p-4 border-b border-white/40 dark:border-white/10 space-y-3 bg-white/10 dark:bg-white/5">
-                    <input type="text" id="transPatient" placeholder="Patient / Zimmer" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
-                    <div class="flex gap-2">
-                        <input list="zielOptions" id="transZiel" placeholder="Ziel..." class="flex-1 w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white font-medium placeholder-slate-400 dark:placeholder-slate-500">
-                        <datalist id="zielOptions">
-                            <option value="Entlassung / Heim"><option value="Rücktransport"><option value="Verlegung Extern"><option value="Verlegung Intern"><option value="CT"><option value="Röntgen"><option value="Station"><option value="OP"><option value="Herzkatheter">
-                        </datalist>
-                        <input type="time" id="transTime" title="Ziel-Uhrzeit (leer = sofort)" class="w-26 text-sm p-2.5 rounded-lg glass-input outline-none text-center text-slate-800 dark:text-white">
+                <div class="panel-content flex flex-col">
+                    <div class="p-4 border-b border-white/40 dark:border-white/10 space-y-3 bg-white/10 dark:bg-white/5">
+                        <input type="text" id="transPatient" placeholder="Patient / Zimmer" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
+                        <div class="flex gap-2">
+                            <input list="zielOptions" id="transZiel" placeholder="Ziel..." class="flex-1 w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white font-medium placeholder-slate-400 dark:placeholder-slate-500">
+                            <datalist id="zielOptions">
+                                <option value="Entlassung / Heim"><option value="Rücktransport"><option value="Verlegung Extern"><option value="Verlegung Intern"><option value="CT"><option value="Röntgen"><option value="Station"><option value="OP"><option value="Herzkatheter">
+                            </datalist>
+                            <input type="time" id="transTime" title="Ziel-Uhrzeit (leer = sofort)" class="w-26 text-sm p-2.5 rounded-lg glass-input outline-none text-center text-slate-800 dark:text-white">
+                        </div>
+                        <button onclick="addTransport()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white dark:bg-indigo-500/30 dark:hover:bg-indigo-500/50 dark:border dark:border-indigo-400/50 dark:text-white text-sm py-2.5 rounded-lg transition font-bold shadow-md dark:shadow-[0_0_15px_rgba(99,102,241,0.3)]"><i class="fa-solid fa-truck-medical mr-2"></i> Transport anlegen</button>
                     </div>
-                    <button onclick="addTransport()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white dark:bg-indigo-500/30 dark:hover:bg-indigo-500/50 dark:border dark:border-indigo-400/50 dark:text-white text-sm py-2.5 rounded-lg transition font-bold shadow-md dark:shadow-[0_0_15px_rgba(99,102,241,0.3)]"><i class="fa-solid fa-truck-medical mr-2"></i> Transport anlegen</button>
-                </div>
-
-                <div id="transportList" class="p-4 overflow-y-auto max-h-[300px] space-y-3 custom-scrollbar bg-white/5 dark:bg-transparent">
-                    <!-- Transports injected here -->
+                    <div id="transportList" class="p-4 overflow-y-auto max-h-[400px] space-y-3 custom-scrollbar bg-white/5 dark:bg-transparent">
+                        <!-- Transports injected here -->
+                    </div>
                 </div>
             </div>
 
-            <!-- NEW Panel: SOP & SR Log -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden" id="panel-soplog">
+            <!-- Panel: SOP & SR Log -->
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden w-full" id="panel-soplog">
                 <div class="p-3 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-purple-50/50 dark:bg-purple-900/10 cursor-default shrink-0">
                     <h2 class="font-bold flex items-center gap-2 text-purple-700 dark:text-purple-400 text-sm drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 transition rounded hover:bg-purple-200/50 dark:hover:bg-purple-900/40 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-solid fa-clipboard-list"></i> SOP & SR Log
                     </h2>
+                    <button onclick="toggleCollapse('panel-soplog'); event.stopPropagation();" class="w-6 h-6 flex items-center justify-center text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 transition rounded hover:bg-purple-200/50 dark:hover:bg-purple-900/40">
+                        <i class="fa-solid fa-chevron-up collapse-icon transition-transform duration-300"></i>
+                    </button>
                 </div>
                 
-                <div class="p-3 bg-white/10 dark:bg-white/5 space-y-2 shrink-0 border-b border-white/40 dark:border-white/10">
-                    <select id="sopSelect" class="w-full text-xs font-bold p-2 rounded-lg glass-input outline-none text-slate-800 dark:text-white cursor-pointer" onchange="updateSOPView()">
-                        <option value="">-- Wähle Top 10 SOP --</option>
-                        <option value="Reanimation">1. Reanimation (ALS)</option>
-                        <option value="Polytrauma">2. Polytrauma</option>
-                        <option value="STEMI">3. STEMI / ACS</option>
-                        <option value="Stroke">4. Stroke / Apoplex</option>
-                        <option value="Sepsis">5. Sepsis</option>
-                        <option value="Anaphylaxie">6. Anaphylaxie</option>
-                        <option value="StatusEpilepticus">7. Status Epilepticus</option>
-                        <option value="Lungenembolie">8. Lungenembolie</option>
-                        <option value="Hyperkaliämie">9. Hyperkaliämie</option>
-                        <option value="Atemnot">10. Akute Atemnot (COPD/Asthma)</option>
-                    </select>
-                    
-                    <div id="sopFacts" class="text-[10px] font-medium text-slate-700 dark:text-slate-300 bg-white/60 dark:bg-black/20 p-2 rounded-lg border border-white/80 dark:border-white/10 min-h-[40px] flex items-center shadow-sm">
-                        SOP auswählen für Hard Facts...
-                    </div>
-                    
-                    <div class="flex gap-2 pt-1">
-                        <input type="text" id="srCustomInput" placeholder="Freitext Log..." class="flex-1 text-[10px] p-2 rounded glass-input outline-none text-slate-800 dark:text-white" onkeypress="if(event.key === 'Enter') addSrLogCustom()">
-                        <button onclick="addSrLogCustom()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded transition text-[10px] font-bold shadow-sm"><i class="fa-solid fa-check"></i></button>
+                <div class="panel-content flex flex-col">
+                    <div class="p-3 bg-white/10 dark:bg-white/5 space-y-2 shrink-0 border-b border-white/40 dark:border-white/10">
+                        <select id="sopSelect" class="w-full text-xs font-bold p-2 rounded-lg glass-input outline-none text-slate-800 dark:text-white cursor-pointer" onchange="updateSOPView()">
+                            <option value="">-- Wähle Top 10 SOP --</option>
+                            <option value="Reanimation">1. Reanimation (ALS)</option>
+                            <option value="Polytrauma">2. Polytrauma</option>
+                            <option value="STEMI">3. STEMI / ACS</option>
+                            <option value="Stroke">4. Stroke / Apoplex</option>
+                            <option value="Sepsis">5. Sepsis</option>
+                            <option value="Anaphylaxie">6. Anaphylaxie</option>
+                            <option value="StatusEpilepticus">7. Status Epilepticus</option>
+                            <option value="Lungenembolie">8. Lungenembolie</option>
+                            <option value="Hyperkaliämie">9. Hyperkaliämie</option>
+                            <option value="Atemnot">10. Akute Atemnot (COPD/Asthma)</option>
+                        </select>
+                        
+                        <div id="sopFacts" class="text-[10px] font-medium text-slate-700 dark:text-slate-300 bg-white/60 dark:bg-black/20 p-2 rounded-lg border border-white/80 dark:border-white/10 min-h-[40px] flex items-center shadow-sm">
+                            SOP auswählen für Hard Facts...
+                        </div>
+                        
+                        <div class="flex gap-2 pt-1">
+                            <input type="text" id="srCustomInput" placeholder="Freitext Log..." class="flex-1 text-[10px] p-2 rounded glass-input outline-none text-slate-800 dark:text-white" onkeypress="if(event.key === 'Enter') addSrLogCustom()">
+                            <button onclick="addSrLogCustom()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded transition text-[10px] font-bold shadow-sm"><i class="fa-solid fa-check"></i></button>
+                        </div>
+
+                        <div id="sopActionBtns" class="flex flex-wrap gap-1.5 mt-1">
+                            <!-- Dynamic Buttons injected here based on SOP -->
+                        </div>
                     </div>
 
-                    <div id="sopActionBtns" class="flex flex-wrap gap-1.5 mt-1">
-                        <!-- Dynamic Buttons injected here based on SOP -->
+                    <div class="overflow-y-auto p-2 bg-white/5 dark:bg-transparent max-h-[300px] custom-scrollbar space-y-1" id="srLogList">
+                        <!-- Logs go here -->
                     </div>
-                </div>
 
-                <div class="flex-1 overflow-y-auto p-2 bg-white/5 dark:bg-transparent custom-scrollbar space-y-1" id="srLogList">
-                    <!-- Logs go here -->
-                </div>
-
-                <div class="p-2 border-t border-white/40 dark:border-white/10 flex gap-2 shrink-0 bg-white/10 dark:bg-white/5">
-                    <button onclick="copySrLog()" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-white dark:bg-white/10 dark:hover:bg-white/20 rounded transition text-[10px] font-bold flex justify-center items-center gap-1.5 shadow-sm"><i class="fa-regular fa-copy"></i> Log Kopieren</button>
-                    <button onclick="clearSrLog()" class="px-3 py-1.5 glass-input text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 rounded transition text-[10px] font-bold"><i class="fa-solid fa-trash"></i></button>
+                    <div class="p-2 border-t border-white/40 dark:border-white/10 flex gap-2 shrink-0 bg-white/10 dark:bg-white/5">
+                        <button onclick="copySrLog()" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-white dark:bg-white/10 dark:hover:bg-white/20 rounded transition text-[10px] font-bold flex justify-center items-center gap-1.5 shadow-sm"><i class="fa-regular fa-copy"></i> Log Kopieren</button>
+                        <button onclick="clearSrLog()" class="px-3 py-1.5 glass-input text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 rounded transition text-[10px] font-bold"><i class="fa-solid fa-trash"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Column 3 -->
-        <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300" id="col-2">
+        <div class="panel-col flex flex-col gap-4 min-h-[100px] transition-colors duration-300" id="col-2">
             <!-- Panel: Vitals -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col max-h-full overflow-hidden" id="panel-vitals">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden w-full" id="panel-vitals">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-solid fa-heartbeat text-pink-500 dark:text-pink-400"></i> Vital Zwischenablage
                     </h2>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleCollapse('panel-vitals'); event.stopPropagation();" class="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10">
+                            <i class="fa-solid fa-chevron-up collapse-icon transition-transform duration-300"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="p-4 space-y-4 overflow-y-auto flex-1 custom-scrollbar bg-white/5 dark:bg-transparent">
-                    <div>
-                        <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">Patienten Info optional</label>
-                        <input type="text" id="vitPatient" placeholder="Name oder Raum" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400">
-                    </div>
-                    
-                    <div>
-                        <label class="text-xs font-bold text-red-500 dark:text-red-400 mb-1.5 block uppercase tracking-widest drop-shadow-sm"><i class="fa-solid fa-triangle-exclamation"></i> Allergien</label>
-                        <input type="text" id="vitAllergies" placeholder="Keine bekannt / Penicillin..." class="w-full text-sm p-2.5 rounded-lg bg-red-50/50 dark:bg-red-900/20 border border-red-300 dark:border-red-500/40 focus:border-red-500 outline-none text-slate-800 dark:text-white backdrop-blur-md shadow-sm transition placeholder-red-300 dark:placeholder-red-400/50">
-                        <div class="flex flex-wrap gap-1.5 mt-2">
-                            <button onclick="addAllergy('Penicillin')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Penicillin</button>
-                            <button onclick="addAllergy('Novalgin')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Novalgin</button>
-                            <button onclick="addAllergy('Pflaster')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Pflaster</button>
-                            <button onclick="addAllergy('KM')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">KM</button>
-                            <button onclick="addAllergy('Latex')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Latex</button>
-                            <button onclick="setAllergy('Keine bekannt')" class="text-[10px] font-bold bg-emerald-100/60 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded border border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition backdrop-blur-sm shadow-sm">Keine</button>
+                <div class="panel-content flex flex-col">
+                    <div class="p-4 space-y-4 overflow-y-auto max-h-[600px] custom-scrollbar bg-white/5 dark:bg-transparent">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">Patienten Info optional</label>
+                            <input type="text" id="vitPatient" placeholder="Name oder Raum" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400">
                         </div>
-                    </div>
+                        
+                        <div>
+                            <label class="text-xs font-bold text-red-500 dark:text-red-400 mb-1.5 block uppercase tracking-widest drop-shadow-sm"><i class="fa-solid fa-triangle-exclamation"></i> Allergien</label>
+                            <input type="text" id="vitAllergies" placeholder="Keine bekannt / Penicillin..." class="w-full text-sm p-2.5 rounded-lg bg-red-50/50 dark:bg-red-900/20 border border-red-300 dark:border-red-500/40 focus:border-red-500 outline-none text-slate-800 dark:text-white backdrop-blur-md shadow-sm transition placeholder-red-300 dark:placeholder-red-400/50">
+                            <div class="flex flex-wrap gap-1.5 mt-2">
+                                <button onclick="addAllergy('Penicillin')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Penicillin</button>
+                                <button onclick="addAllergy('Novalgin')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Novalgin</button>
+                                <button onclick="addAllergy('Pflaster')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Pflaster</button>
+                                <button onclick="addAllergy('KM')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">KM</button>
+                                <button onclick="addAllergy('Latex')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Latex</button>
+                                <button onclick="setAllergy('Keine bekannt')" class="text-[10px] font-bold bg-emerald-100/60 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded border border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition backdrop-blur-sm shadow-sm">Keine</button>
+                            </div>
+                        </div>
 
-                    <div class="grid grid-cols-3 gap-3">
-                        <div>
-                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">RR mmHg</label>
-                            <input type="text" id="vitRR" placeholder="120/80" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">RR mmHg</label>
+                                <input type="text" id="vitRR" placeholder="120/80" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">HF /min</label>
+                                <input type="number" id="vitHF" placeholder="80" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">AF /min</label>
+                                <input type="number" id="vitAF" placeholder="15" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">SpO2 %</label>
+                                <input type="number" id="vitSpO2" placeholder="98" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">Temp °C</label>
+                                <input type="number" step="0.1" id="vitTemp" placeholder="37.0" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                            </div>
                         </div>
                         <div>
-                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">HF /min</label>
-                            <input type="number" id="vitHF" placeholder="80" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">GCS / BZ / Sonstiges</label>
+                            <input type="text" id="vitMisc" placeholder="BZ 120, GCS 15..." class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400">
                         </div>
-                        <div>
-                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">AF /min</label>
-                            <input type="number" id="vitAF" placeholder="15" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                        
+                        <div class="pt-2 flex gap-3">
+                            <button onclick="copyVitals()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white dark:bg-white/10 dark:hover:bg-white/20 dark:border dark:border-white/30 py-2.5 rounded-lg transition font-bold text-sm flex justify-center items-center gap-2 shadow-md backdrop-blur-md">
+                                <i class="fa-regular fa-copy"></i> Kopieren
+                            </button>
+                            <button onclick="clearVitals()" class="glass-input hover:bg-red-50 dark:hover:bg-red-900/40 text-slate-700 hover:text-red-600 dark:text-red-400 px-4 py-2.5 rounded-lg transition shadow-sm">
+                                <i class="fa-solid fa-eraser"></i>
+                            </button>
                         </div>
+                        <div id="copyToast" class="hidden text-center text-xs font-bold text-helios-700 bg-helios-100/80 border border-helios-300 dark:text-helios-300 dark:bg-helios-500/20 dark:border-helios-400/50 p-2.5 rounded-lg mt-2 backdrop-blur-md shadow-lg">Kopiert für Orbis!</div>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">SpO2 %</label>
-                            <input type="number" id="vitSpO2" placeholder="98" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">Temp °C</label>
-                            <input type="number" step="0.1" id="vitTemp" placeholder="37.0" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">GCS / BZ / Sonstiges</label>
-                        <input type="text" id="vitMisc" placeholder="BZ 120, GCS 15..." class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400">
-                    </div>
-                    
-                    <div class="pt-2 flex gap-3">
-                        <button onclick="copyVitals()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white dark:bg-white/10 dark:hover:bg-white/20 dark:border dark:border-white/30 py-2.5 rounded-lg transition font-bold text-sm flex justify-center items-center gap-2 shadow-md backdrop-blur-md">
-                            <i class="fa-regular fa-copy"></i> Kopieren
-                        </button>
-                        <button onclick="clearVitals()" class="glass-input hover:bg-red-50 dark:hover:bg-red-900/40 text-slate-700 hover:text-red-600 dark:text-red-400 px-4 py-2.5 rounded-lg transition shadow-sm">
-                            <i class="fa-solid fa-eraser"></i>
-                        </button>
-                    </div>
-                    <div id="copyToast" class="hidden text-center text-xs font-bold text-helios-700 bg-helios-100/80 border border-helios-300 dark:text-helios-300 dark:bg-helios-500/20 dark:border-helios-400/50 p-2.5 rounded-lg mt-2 backdrop-blur-md shadow-lg">Kopiert für Orbis!</div>
                 </div>
             </div>
         </div>
 
         <!-- Column 4 -->
-        <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300 lg:col-span-1" id="col-3">
+        <div class="panel-col flex flex-col gap-4 min-h-[100px] transition-colors duration-300" id="col-3">
             
             <!-- Panel: Quick Timer & Stopwatch -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col shrink-0 overflow-hidden" id="panel-quicktimer">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden w-full" id="panel-quicktimer">
                 <div class="p-3 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-sky-50/50 dark:bg-sky-900/10 cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-sky-700 dark:text-sky-400 text-sm drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-sky-400 hover:text-sky-600 dark:hover:text-sky-300 transition rounded hover:bg-sky-200/50 dark:hover:bg-sky-900/40 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-solid fa-stopwatch"></i> Timer / Stoppuhr
                     </h2>
-                    <div class="font-mono text-xl font-bold text-sky-600 dark:text-sky-400 drop-shadow-sm tracking-wider" id="qtDisplay">00:00</div>
+                    <div class="flex items-center gap-2">
+                        <div class="font-mono text-xl font-bold text-sky-600 dark:text-sky-400 drop-shadow-sm tracking-wider mr-2" id="qtDisplay">00:00</div>
+                        <button onclick="toggleCollapse('panel-quicktimer'); event.stopPropagation();" class="w-6 h-6 flex items-center justify-center text-sky-400 hover:text-sky-600 dark:hover:text-sky-300 transition rounded hover:bg-sky-200/50 dark:hover:bg-sky-900/40">
+                            <i class="fa-solid fa-chevron-up collapse-icon transition-transform duration-300"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="p-2 flex gap-2 bg-white/20 dark:bg-white/5">
-                    <input type="number" id="qtInput" placeholder="Min" title="Zahl = Timer | Leer = Stoppuhr" class="w-16 text-sm p-2 rounded-lg glass-input text-center outline-none text-slate-800 dark:text-white">
-                    <button onclick="toggleQuickTimer()" id="qtToggleBtn" class="flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-1.5"><i class="fa-solid fa-play"></i> Start</button>
-                    <button onclick="resetQuickTimer()" class="w-10 glass-input hover:bg-red-100 dark:hover:bg-red-900/40 text-red-700 dark:text-red-400 text-xs py-2 rounded-lg transition font-bold flex items-center justify-center"><i class="fa-solid fa-rotate-left"></i></button>
+                <div class="panel-content flex flex-col">
+                    <div class="p-2 flex gap-2 bg-white/20 dark:bg-white/5">
+                        <input type="number" id="qtInput" placeholder="Min" title="Zahl = Timer | Leer = Stoppuhr" class="w-16 text-sm p-2 rounded-lg glass-input text-center outline-none text-slate-800 dark:text-white">
+                        <button onclick="toggleQuickTimer()" id="qtToggleBtn" class="flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-1.5"><i class="fa-solid fa-play"></i> Start</button>
+                        <button onclick="resetQuickTimer()" class="w-10 glass-input hover:bg-red-100 dark:hover:bg-red-900/40 text-red-700 dark:text-red-400 text-xs py-2 rounded-lg transition font-bold flex items-center justify-center"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
                 </div>
             </div>
 
             <!-- Panel: Checkliste -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden min-h-[200px]" id="panel-checklist">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden w-full" id="panel-checklist">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-solid fa-list-check text-amber-500 dark:text-amber-400"></i> Checkliste
                     </h2>
-                    <span class="text-[10px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-widest bg-white/40 dark:bg-white/10 px-2 py-1 rounded backdrop-blur-sm border border-white/50 dark:border-white/10">Auto Save</span>
-                </div>
-                <div class="p-4 flex-1 flex flex-col overflow-hidden bg-white/5 dark:bg-transparent">
-                    <div class="flex gap-2 mb-4">
-                        <input type="text" id="newTaskInput" placeholder="Neue Aufgabe..." class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400" onkeypress="if(event.key === 'Enter') addTask()">
-                        <button onclick="addTask()" class="bg-amber-500 hover:bg-amber-400 text-white dark:bg-amber-500/40 dark:hover:bg-amber-500/60 dark:border dark:border-amber-400/50 px-4 rounded-lg transition font-bold shadow-md dark:shadow-[0_0_15px_rgba(245,158,11,0.2)]"><i class="fa-solid fa-plus"></i></button>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-widest bg-white/40 dark:bg-white/10 px-2 py-1 rounded backdrop-blur-sm border border-white/50 dark:border-white/10 hidden xl:inline-block">Auto Save</span>
+                        <button onclick="toggleCollapse('panel-checklist'); event.stopPropagation();" class="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10">
+                            <i class="fa-solid fa-chevron-up collapse-icon transition-transform duration-300"></i>
+                        </button>
                     </div>
-                    <div id="taskList" class="flex-1 overflow-y-auto space-y-2 custom-scrollbar pr-1 mb-2 pb-4">
-                        <!-- Tasks injected here -->
+                </div>
+                <div class="panel-content flex flex-col">
+                    <div class="p-4 flex flex-col bg-white/5 dark:bg-transparent">
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="newTaskInput" placeholder="Neue Aufgabe..." class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400" onkeypress="if(event.key === 'Enter') addTask()">
+                            <button onclick="addTask()" class="bg-amber-500 hover:bg-amber-400 text-white dark:bg-amber-500/40 dark:hover:bg-amber-500/60 dark:border dark:border-amber-400/50 px-4 rounded-lg transition font-bold shadow-md dark:shadow-[0_0_15px_rgba(245,158,11,0.2)]"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div id="taskList" class="overflow-y-auto max-h-[300px] space-y-2 custom-scrollbar pr-1 mb-2 pb-4">
+                            <!-- Tasks injected here -->
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Panel: Notizen -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col shrink-0 h-[250px] overflow-hidden" id="panel-notes">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden w-full" id="panel-notes">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-regular fa-note-sticky text-yellow-500 dark:text-yellow-400"></i> Notizen
                     </h2>
-                    <span class="text-[10px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-widest bg-white/40 dark:bg-white/10 px-2 py-1 rounded backdrop-blur-sm border border-white/50 dark:border-white/10">Auto Save</span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-widest bg-white/40 dark:bg-white/10 px-2 py-1 rounded backdrop-blur-sm border border-white/50 dark:border-white/10 hidden xl:inline-block">Auto Save</span>
+                        <button onclick="toggleCollapse('panel-notes'); event.stopPropagation();" class="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10">
+                            <i class="fa-solid fa-chevron-up collapse-icon transition-transform duration-300"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="p-4 flex-1 flex flex-col overflow-hidden bg-white/5 dark:bg-transparent">
-                    <textarea id="notesArea" placeholder="Schnelle Notizen, Übergabe-Infos..." class="w-full h-full p-3 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 resize-none custom-scrollbar text-sm" oninput="saveNotes()"></textarea>
+                <div class="panel-content flex flex-col">
+                    <div class="p-4 bg-white/5 dark:bg-transparent">
+                        <textarea id="notesArea" placeholder="Schnelle Notizen, Übergabe-Infos..." class="w-full h-48 p-3 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 resize-none custom-scrollbar text-sm" oninput="saveNotes()"></textarea>
+                    </div>
                 </div>
             </div>
 
@@ -477,6 +518,7 @@
             tasks: [],
             notes: "",
             layout: [], 
+            collapsed: [], // Speichert IDs der minimierten Panels
             qt: { mode: 'idle', endTime: 0, startTime: 0, elapsed: 0, running: false },
             srLog: [],
             selectedSOP: ""
@@ -530,7 +572,7 @@
             startClock();
             fetchWeather();
             initPanelDragAndDrop();
-            updateSOPView(true); // initialize SOP view
+            updateSOPView(true);
             renderSrLog();
             
             setInterval(fetchWeather, 1800000); 
@@ -569,6 +611,7 @@
                 appData.tasks = parsed.tasks || [];
                 appData.notes = parsed.notes || "";
                 appData.layout = parsed.layout || [];
+                appData.collapsed = parsed.collapsed || [];
                 appData.srLog = parsed.srLog || [];
                 appData.selectedSOP = parsed.selectedSOP || "";
                 
@@ -585,11 +628,12 @@
                 renderTransports();
                 renderTasks();
                 applyLayout();
+                applyCollapseState();
             }
         }
 
         function clearAllData() {
-            if(confirm('Achtung: Willst du wirklich alle Patientendaten und Protokolle dieser Schicht löschen? Dein Layout bleibt erhalten.')) {
+            if(confirm('Achtung: Willst du wirklich alle Patientendaten und Protokolle dieser Schicht löschen? Layout & minimierte Ansichten bleiben erhalten.')) {
                 appData.timers = [];
                 appData.transports = [];
                 appData.tasks = [];
@@ -604,6 +648,44 @@
                 renderTasks();
                 renderSrLog();
             }
+        }
+
+        // ----------------------------------------------------
+        // COLLAPSE LOGIC
+        // ----------------------------------------------------
+        function toggleCollapse(panelId) {
+            const panel = document.getElementById(panelId);
+            const content = panel.querySelector('.panel-content');
+            const icon = panel.querySelector('.collapse-icon');
+            
+            const isHidden = content.classList.toggle('hidden');
+            
+            if (isHidden) {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+                if(!appData.collapsed.includes(panelId)) appData.collapsed.push(panelId);
+            } else {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+                appData.collapsed = appData.collapsed.filter(id => id !== panelId);
+            }
+            saveData();
+        }
+
+        function applyCollapseState() {
+            if (!appData.collapsed) return;
+            appData.collapsed.forEach(panelId => {
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    const content = panel.querySelector('.panel-content');
+                    const icon = panel.querySelector('.collapse-icon');
+                    if (content) content.classList.add('hidden');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                }
+            });
         }
 
         // ----------------------------------------------------
@@ -623,10 +705,8 @@
             
             if (key && sopData[key]) {
                 const data = sopData[key];
-                // Render Facts with slight formatting
                 factsEl.innerHTML = `<span class="text-purple-600 dark:text-purple-400 mr-1"><i class="fa-solid fa-bolt"></i></span> ` + data.facts;
                 
-                // Render SOP Specific Buttons
                 data.actions.forEach(action => {
                     btnsEl.innerHTML += `<button onclick="addSrLog('${action}')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 dark:bg-purple-900/40 dark:hover:bg-purple-800/60 dark:text-purple-300 dark:border dark:border-purple-500/30 px-2 py-1 rounded transition text-[10px] font-bold shadow-sm">${action}</button>`;
                 });
@@ -634,7 +714,6 @@
                 factsEl.innerHTML = "SOP auswählen für Hard Facts und Quick-Buttons...";
             }
 
-            // Always add default buttons
             defaultActions.forEach(action => {
                 btnsEl.innerHTML += `<button onclick="addSrLog('${action}')" class="bg-white/60 hover:bg-white text-slate-700 dark:bg-slate-800/60 dark:hover:bg-slate-700 dark:text-slate-300 dark:border dark:border-white/10 px-2 py-1 rounded transition text-[10px] font-bold shadow-sm">${action}</button>`;
             });
@@ -650,7 +729,7 @@
 
         function addSrLog(text) {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             appData.srLog.push({ id: Date.now(), time: timeStr, text: text });
             saveData();
             renderSrLog();
@@ -664,7 +743,6 @@
                 return;
             }
             
-            // Reverse so newest is top or bottom? Usually logs go bottom up, but since it's a fixed window, latest at top is better.
             const sortedLogs = [...appData.srLog].sort((a,b) => b.id - a.id);
             
             sortedLogs.forEach(entry => {
@@ -775,11 +853,10 @@
         }
 
         function applyLayout() {
-            // Include new panel ID if missing from old saved layout
             if(appData.layout && appData.layout.length > 0) {
                let foundSopLog = false;
                appData.layout.forEach(col => { if(col.includes('panel-soplog')) foundSopLog = true; });
-               if(!foundSopLog && appData.layout[1]) appData.layout[1].push('panel-soplog'); // Push to col 2 by default
+               if(!foundSopLog && appData.layout[1]) appData.layout[1].push('panel-soplog'); 
             }
 
             if (!appData.layout || appData.layout.length === 0) return;
