@@ -248,7 +248,7 @@
         <!-- Column 2 -->
         <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300" id="col-1">
             <!-- Panel: Transports -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col max-h-full overflow-hidden" id="panel-transports">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col overflow-hidden shrink-0" id="panel-transports">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
@@ -268,8 +268,56 @@
                     <button onclick="addTransport()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white dark:bg-indigo-500/30 dark:hover:bg-indigo-500/50 dark:border dark:border-indigo-400/50 dark:text-white text-sm py-2.5 rounded-lg transition font-bold shadow-md dark:shadow-[0_0_15px_rgba(99,102,241,0.3)]"><i class="fa-solid fa-truck-medical mr-2"></i> Transport anlegen</button>
                 </div>
 
-                <div id="transportList" class="p-4 overflow-y-auto flex-1 space-y-3 custom-scrollbar bg-white/5 dark:bg-transparent">
+                <div id="transportList" class="p-4 overflow-y-auto max-h-[300px] space-y-3 custom-scrollbar bg-white/5 dark:bg-transparent">
                     <!-- Transports injected here -->
+                </div>
+            </div>
+
+            <!-- NEW Panel: SOP & SR Log -->
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden" id="panel-soplog">
+                <div class="p-3 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-purple-50/50 dark:bg-purple-900/10 cursor-default shrink-0">
+                    <h2 class="font-bold flex items-center gap-2 text-purple-700 dark:text-purple-400 text-sm drop-shadow-sm">
+                        <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 transition rounded hover:bg-purple-200/50 dark:hover:bg-purple-900/40 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
+                        <i class="fa-solid fa-clipboard-list"></i> SOP & SR Log
+                    </h2>
+                </div>
+                
+                <div class="p-3 bg-white/10 dark:bg-white/5 space-y-2 shrink-0 border-b border-white/40 dark:border-white/10">
+                    <select id="sopSelect" class="w-full text-xs font-bold p-2 rounded-lg glass-input outline-none text-slate-800 dark:text-white cursor-pointer" onchange="updateSOPView()">
+                        <option value="">-- Wähle Top 10 SOP --</option>
+                        <option value="Reanimation">1. Reanimation (ALS)</option>
+                        <option value="Polytrauma">2. Polytrauma</option>
+                        <option value="STEMI">3. STEMI / ACS</option>
+                        <option value="Stroke">4. Stroke / Apoplex</option>
+                        <option value="Sepsis">5. Sepsis</option>
+                        <option value="Anaphylaxie">6. Anaphylaxie</option>
+                        <option value="StatusEpilepticus">7. Status Epilepticus</option>
+                        <option value="Lungenembolie">8. Lungenembolie</option>
+                        <option value="Hyperkaliämie">9. Hyperkaliämie</option>
+                        <option value="Atemnot">10. Akute Atemnot (COPD/Asthma)</option>
+                    </select>
+                    
+                    <div id="sopFacts" class="text-[10px] font-medium text-slate-700 dark:text-slate-300 bg-white/60 dark:bg-black/20 p-2 rounded-lg border border-white/80 dark:border-white/10 min-h-[40px] flex items-center shadow-sm">
+                        SOP auswählen für Hard Facts...
+                    </div>
+                    
+                    <div class="flex gap-2 pt-1">
+                        <input type="text" id="srCustomInput" placeholder="Freitext Log..." class="flex-1 text-[10px] p-2 rounded glass-input outline-none text-slate-800 dark:text-white" onkeypress="if(event.key === 'Enter') addSrLogCustom()">
+                        <button onclick="addSrLogCustom()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded transition text-[10px] font-bold shadow-sm"><i class="fa-solid fa-check"></i></button>
+                    </div>
+
+                    <div id="sopActionBtns" class="flex flex-wrap gap-1.5 mt-1">
+                        <!-- Dynamic Buttons injected here based on SOP -->
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-2 bg-white/5 dark:bg-transparent custom-scrollbar space-y-1" id="srLogList">
+                    <!-- Logs go here -->
+                </div>
+
+                <div class="p-2 border-t border-white/40 dark:border-white/10 flex gap-2 shrink-0 bg-white/10 dark:bg-white/5">
+                    <button onclick="copySrLog()" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-white dark:bg-white/10 dark:hover:bg-white/20 rounded transition text-[10px] font-bold flex justify-center items-center gap-1.5 shadow-sm"><i class="fa-regular fa-copy"></i> Log Kopieren</button>
+                    <button onclick="clearSrLog()" class="px-3 py-1.5 glass-input text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 rounded transition text-[10px] font-bold"><i class="fa-solid fa-trash"></i></button>
                 </div>
             </div>
         </div>
@@ -366,7 +414,7 @@
             </div>
 
             <!-- Panel: Checkliste -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden" id="panel-checklist">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden min-h-[200px]" id="panel-checklist">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
@@ -386,7 +434,7 @@
             </div>
 
             <!-- Panel: Notizen -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden" id="panel-notes">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col shrink-0 h-[250px] overflow-hidden" id="panel-notes">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
@@ -404,44 +452,55 @@
     </main>
 
     <script>
+        // ----------------------------------------------------
+        // SOP DATA
+        // ----------------------------------------------------
+        const sopData = {
+            "Reanimation": { facts: "Adrenalin 1mg i.v. alle 3-5 Min | Amiodaron 300mg nach 3. Schock | H&Hs checken", actions: ["CPR Start", "Rhythmuskontrolle", "Schockabgabe", "Adrenalin 1mg", "Amiodaron 300mg", "ROSC"] },
+            "Polytrauma": { facts: "Ziel-RR >90 (SHT >110) | Tranexamsäure 1g i.v. frühzeitig | Beckenschlinge | eFAST", actions: ["SR Start", "eFAST positiv", "TXA 1g", "EK Gabe", "Intubation", "CT Transport"] },
+            "STEMI": { facts: "ASS 250mg i.v. | Heparin 5000 IE i.v. | O2 nur bei SpO2 < 90% | P2Y12 Hemmer n.R.", actions: ["12-Kanal EKG", "ASS 250mg", "Heparin 5000iE", "Schmerztherapie", "Labor & Trop", "HKL Anmeldung"] },
+            "Stroke": { facts: "Zeitfenster Lyse 4.5h! | RR-Ziel < 185/110 mmHg vor Lyse | BZ messen!", actions: ["Symptombeginn erfragt", "Neuro Status (NIHSS)", "BZ gemessen", "CT Nativ", "Lyse Start"] },
+            "Sepsis": { facts: "qSOFA? | Blutkulturen VOR Antibiose | Breitband-AB in < 1h | 30ml/kg kristalloide Lsg", actions: ["Blutkulturen abgenommen", "Antibiose angehängt", "Volumengabe Start", "Laktat gemessen", "BGA"] },
+            "Anaphylaxie": { facts: "Adrenalin 0.5mg i.m. (Oberschenkel!) | H1/H2 Blocker | Volumengabe | O2", actions: ["Adrenalin i.m.", "Fenistil/Tavegil", "Cortison i.v.", "Volumen Start", "Atemwege gesichert"] },
+            "StatusEpilepticus": { facts: "Lorazepam (Tavor) 2-4mg i.v. (langsam) | Alternativ: Midazolam i.n./i.m. | O2", actions: ["O2 Gabe", "Lorazepam i.v.", "Midazolam", "Leve/Valproat", "Intubation"] },
+            "Lungenembolie": { facts: "Heparin Bolus (5000 IE oder gewichtsadaptiert) | O2 Gabe | Echo erwägen (Re-Herz Belastung?)", actions: ["Heparin Bolus", "BGA", "O2 Anlage", "CT-Angio Anmeldung", "Lyse erwogen"] },
+            "Hyperkaliämie": { facts: "EKG Check! (Zelt-T?) | Calciumgluconat 10% (Herzschutz) | Glukose 10% + 10 IE Alt-Insulin", actions: ["EKG geschrieben", "Calciumgluconat", "Glukose+Insulin", "Salbutamol Inhal.", "BGA Kontrolle"] },
+            "Atemnot": { facts: "Salbutamol/Atrovent Inhalation | Cortison i.v. | NIV frühzeitig erwägen (COPD)", actions: ["Sitzende Lagerung", "O2 / NIV", "Inhalation Start", "Cortison i.v.", "BGA"] }
+        };
+
+        const defaultActions = ["Zugang gelegt", "Labor abgenommen", "Arzt Info", "BGA", "EKG"];
+
         // State Management
         let appData = {
             timers: [],
             transports: [],
             tasks: [],
             notes: "",
-            layout: [], // Stores the order of panels in columns
-            qt: { mode: 'idle', endTime: 0, startTime: 0, elapsed: 0, running: false }
+            layout: [], 
+            qt: { mode: 'idle', endTime: 0, startTime: 0, elapsed: 0, running: false },
+            srLog: [],
+            selectedSOP: ""
         };
 
-        // Audio Setup for Gong
         let audioUnlocked = false;
 
         function playGong() {
             const gong = document.getElementById('gongSound');
-            if(gong) {
-                gong.volume = 1.0;
-                gong.play().catch(err => console.log("Audio blockiert"));
-            }
+            if(gong) { gong.volume = 1.0; gong.play().catch(err => console.log("Audio blockiert")); }
         }
 
         document.body.addEventListener('click', function unlockAudio() {
             if(!audioUnlocked) {
                 const gong = document.getElementById('gongSound');
-                if(gong) {
-                    gong.volume = 0;
-                    gong.play().then(() => { gong.pause(); gong.currentTime = 0; audioUnlocked = true; }).catch(e => {});
-                }
+                if(gong) { gong.volume = 0; gong.play().then(() => { gong.pause(); gong.currentTime = 0; audioUnlocked = true; }).catch(e => {}); }
             }
         }, { once: true });
 
-        // Theme Toggle Logic
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
         }
 
-        // Live Weather via Open-Meteo API
         async function fetchWeather() {
             const weatherEl = document.getElementById('weather');
             if(!weatherEl) return;
@@ -471,10 +530,12 @@
             startClock();
             fetchWeather();
             initPanelDragAndDrop();
+            updateSOPView(true); // initialize SOP view
+            renderSrLog();
+            
             setInterval(fetchWeather, 1800000); 
             setInterval(updateAllTimers, 1000);
             
-            // Re-Initialize Quick Timer / Stopwatch
             if(appData.qt.running) {
                 qtInterval = setInterval(updateQuickTimer, 100);
                 const btn = document.getElementById('qtToggleBtn');
@@ -482,7 +543,7 @@
                 btn.classList.replace('bg-sky-600', 'bg-amber-500');
                 btn.classList.replace('hover:bg-sky-500', 'hover:bg-amber-400');
             } else if (appData.qt.mode !== 'idle') {
-                updateQuickTimerDisplay(); // Just show current paused state
+                updateQuickTimerDisplay(); 
                 const btn = document.getElementById('qtToggleBtn');
                 btn.innerHTML = '<i class="fa-solid fa-play"></i> Start';
             }
@@ -497,9 +558,7 @@
         }
 
         // Data Persistence
-        function saveData() {
-            localStorage.setItem('erTaskRadar', JSON.stringify(appData));
-        }
+        function saveData() { localStorage.setItem('erTaskRadar', JSON.stringify(appData)); }
 
         function loadData() {
             const saved = localStorage.getItem('erTaskRadar');
@@ -510,8 +569,9 @@
                 appData.tasks = parsed.tasks || [];
                 appData.notes = parsed.notes || "";
                 appData.layout = parsed.layout || [];
+                appData.srLog = parsed.srLog || [];
+                appData.selectedSOP = parsed.selectedSOP || "";
                 
-                // Migrate old qtEndTime if it existed, otherwise use new struct
                 if (parsed.qtEndTime && parsed.qtEndTime > Date.now()) {
                     appData.qt = { mode: 'timer', endTime: parsed.qtEndTime, startTime: 0, elapsed: 0, running: true };
                 } else {
@@ -519,6 +579,7 @@
                 }
 
                 document.getElementById('notesArea').value = appData.notes;
+                document.getElementById('sopSelect').value = appData.selectedSOP;
 
                 renderTimers();
                 renderTransports();
@@ -528,11 +589,12 @@
         }
 
         function clearAllData() {
-            if(confirm('Achtung: Willst du wirklich alle Daten dieser Schicht löschen? Dein Layout bleibt erhalten.')) {
+            if(confirm('Achtung: Willst du wirklich alle Patientendaten und Protokolle dieser Schicht löschen? Dein Layout bleibt erhalten.')) {
                 appData.timers = [];
                 appData.transports = [];
                 appData.tasks = [];
                 appData.notes = "";
+                appData.srLog = [];
                 clearVitals();
                 resetQuickTimer();
                 document.getElementById('notesArea').value = "";
@@ -540,7 +602,101 @@
                 renderTimers();
                 renderTransports();
                 renderTasks();
+                renderSrLog();
             }
+        }
+
+        // ----------------------------------------------------
+        // SOP & SR LOG LOGIC
+        // ----------------------------------------------------
+        function updateSOPView(isInit = false) {
+            const select = document.getElementById('sopSelect');
+            if(!isInit) {
+                appData.selectedSOP = select.value;
+                saveData();
+            }
+            const key = appData.selectedSOP;
+            const factsEl = document.getElementById('sopFacts');
+            const btnsEl = document.getElementById('sopActionBtns');
+            
+            btnsEl.innerHTML = '';
+            
+            if (key && sopData[key]) {
+                const data = sopData[key];
+                // Render Facts with slight formatting
+                factsEl.innerHTML = `<span class="text-purple-600 dark:text-purple-400 mr-1"><i class="fa-solid fa-bolt"></i></span> ` + data.facts;
+                
+                // Render SOP Specific Buttons
+                data.actions.forEach(action => {
+                    btnsEl.innerHTML += `<button onclick="addSrLog('${action}')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 dark:bg-purple-900/40 dark:hover:bg-purple-800/60 dark:text-purple-300 dark:border dark:border-purple-500/30 px-2 py-1 rounded transition text-[10px] font-bold shadow-sm">${action}</button>`;
+                });
+            } else {
+                factsEl.innerHTML = "SOP auswählen für Hard Facts und Quick-Buttons...";
+            }
+
+            // Always add default buttons
+            defaultActions.forEach(action => {
+                btnsEl.innerHTML += `<button onclick="addSrLog('${action}')" class="bg-white/60 hover:bg-white text-slate-700 dark:bg-slate-800/60 dark:hover:bg-slate-700 dark:text-slate-300 dark:border dark:border-white/10 px-2 py-1 rounded transition text-[10px] font-bold shadow-sm">${action}</button>`;
+            });
+        }
+
+        function addSrLogCustom() {
+            const input = document.getElementById('srCustomInput');
+            if(input.value.trim() !== '') {
+                addSrLog(input.value.trim());
+                input.value = '';
+            }
+        }
+
+        function addSrLog(text) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            appData.srLog.push({ id: Date.now(), time: timeStr, text: text });
+            saveData();
+            renderSrLog();
+        }
+
+        function renderSrLog() {
+            const list = document.getElementById('srLogList');
+            list.innerHTML = '';
+            if(appData.srLog.length === 0) {
+                list.innerHTML = '<div class="text-center text-slate-400 dark:text-slate-500 text-[10px] py-4 font-mono">Log ist leer</div>';
+                return;
+            }
+            
+            // Reverse so newest is top or bottom? Usually logs go bottom up, but since it's a fixed window, latest at top is better.
+            const sortedLogs = [...appData.srLog].sort((a,b) => b.id - a.id);
+            
+            sortedLogs.forEach(entry => {
+                list.innerHTML += `<div class="flex items-start gap-2 text-[10px] border-b border-white/20 dark:border-white/5 pb-1"><span class="font-mono font-bold text-slate-500 dark:text-slate-400">[${entry.time}]</span><span class="font-medium text-slate-800 dark:text-slate-200">${entry.text}</span></div>`;
+            });
+        }
+
+        function clearSrLog() {
+            if(confirm('Protokoll wirklich leeren?')) {
+                appData.srLog = [];
+                saveData();
+                renderSrLog();
+            }
+        }
+
+        function copySrLog() {
+            if(appData.srLog.length === 0) return;
+            const sortedLogs = [...appData.srLog].sort((a,b) => a.id - b.id); // Chronological for copy
+            let text = "SCHOCKRAUM / EINSATZ PROTOKOLL\n--------------------------------\n";
+            if(appData.selectedSOP) text += `SOP: ${appData.selectedSOP}\n\n`;
+            
+            sortedLogs.forEach(entry => {
+                text += `[${entry.time}] ${entry.text}\n`;
+            });
+            
+            navigator.clipboard.writeText(text).then(() => { 
+                const toast = document.getElementById('copyToast'); 
+                toast.classList.remove('hidden'); 
+                setTimeout(() => toast.classList.add('hidden'), 2500); 
+            }).catch(err => {
+                const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); const toast = document.getElementById('copyToast'); toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 2500); } catch (e) {} document.body.removeChild(ta);
+            });
         }
 
         // ----------------------------------------------------
@@ -619,6 +775,13 @@
         }
 
         function applyLayout() {
+            // Include new panel ID if missing from old saved layout
+            if(appData.layout && appData.layout.length > 0) {
+               let foundSopLog = false;
+               appData.layout.forEach(col => { if(col.includes('panel-soplog')) foundSopLog = true; });
+               if(!foundSopLog && appData.layout[1]) appData.layout[1].push('panel-soplog'); // Push to col 2 by default
+            }
+
             if (!appData.layout || appData.layout.length === 0) return;
             const cols = document.querySelectorAll('.panel-col');
             appData.layout.forEach((panelIds, i) => {
@@ -637,7 +800,6 @@
         let qtInterval = null;
 
         function toggleQuickTimer() {
-            // Unlock audio on interaction
             if(!audioUnlocked) {
                 const gong = document.getElementById('gongSound');
                 if(gong) { gong.volume = 0; gong.play().then(()=>{gong.pause(); audioUnlocked=true;}).catch(e=>{}); }
@@ -648,39 +810,33 @@
             const qt = appData.qt;
 
             if (qt.running) {
-                // -> PAUSE
+                // PAUSE
                 qt.running = false;
                 if (qt.mode === 'timer') {
-                    qt.elapsed = qt.endTime - Date.now(); // Speichert die verbleibenden Millisekunden
+                    qt.elapsed = qt.endTime - Date.now(); 
                 } else if (qt.mode === 'stopwatch') {
-                    qt.elapsed += Date.now() - qt.startTime; // Speichert die bisher vergangene Zeit
+                    qt.elapsed += Date.now() - qt.startTime; 
                 }
                 clearInterval(qtInterval);
                 btn.innerHTML = '<i class="fa-solid fa-play"></i> Start';
                 btn.classList.replace('bg-amber-500', 'bg-sky-600');
                 btn.classList.replace('hover:bg-amber-400', 'hover:bg-sky-500');
             } else {
-                // -> START or RESUME
+                // START / RESUME
                 if (qt.mode === 'idle') {
                     const mins = parseFloat(input.value);
                     if (!isNaN(mins) && mins > 0) {
-                        // Init Timer
                         qt.mode = 'timer';
                         qt.endTime = Date.now() + (mins * 60000);
                     } else {
-                        // Init Stopwatch
                         qt.mode = 'stopwatch';
                         qt.startTime = Date.now();
                         qt.elapsed = 0;
                     }
-                    input.value = ''; // Feld leeren für saubere UX
+                    input.value = ''; 
                 } else {
-                    // Resume existing
-                    if (qt.mode === 'timer') {
-                        qt.endTime = Date.now() + qt.elapsed; // rechne verbleibende Zeit neu drauf
-                    } else if (qt.mode === 'stopwatch') {
-                        qt.startTime = Date.now();
-                    }
+                    if (qt.mode === 'timer') qt.endTime = Date.now() + qt.elapsed; 
+                    else if (qt.mode === 'stopwatch') qt.startTime = Date.now();
                 }
                 
                 qt.running = true;
@@ -717,7 +873,6 @@
             if (qt.mode === 'timer') {
                 const diff = qt.endTime - Date.now();
                 if (diff <= 0) {
-                    // Timer ist abgelaufen
                     qt.running = false;
                     qt.mode = 'idle';
                     clearInterval(qtInterval);
@@ -743,24 +898,17 @@
             const qt = appData.qt;
             const display = document.getElementById('qtDisplay');
             
-            if (qt.mode === 'idle') {
-                display.innerText = "00:00";
-                return;
-            }
+            if (qt.mode === 'idle') { display.innerText = "00:00"; return; }
 
             let ms = 0;
-            if (qt.mode === 'timer') {
-                ms = qt.running ? qt.endTime - Date.now() : qt.elapsed;
-            } else if (qt.mode === 'stopwatch') {
-                ms = qt.running ? qt.elapsed + (Date.now() - qt.startTime) : qt.elapsed;
-            }
+            if (qt.mode === 'timer') { ms = qt.running ? qt.endTime - Date.now() : qt.elapsed; } 
+            else if (qt.mode === 'stopwatch') { ms = qt.running ? qt.elapsed + (Date.now() - qt.startTime) : qt.elapsed; }
 
             if (ms < 0) ms = 0;
 
             const totalSeconds = Math.floor(ms / 1000);
             const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
             const s = (totalSeconds % 60).toString().padStart(2, '0');
-            
             display.innerText = `${m}:${s}`;
         }
 
@@ -781,12 +929,8 @@
                 }
             });
             
-            if (needsRender) {
-                saveData();
-                renderTimers();
-            } else {
-                updateTimerDisplays(now);
-            }
+            if (needsRender) { saveData(); renderTimers(); } 
+            else { updateTimerDisplays(now); }
         }
 
         function formatTimeDiff(ms) {
@@ -796,7 +940,6 @@
             return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
         }
 
-        // Feature: Timers
         function addTimer(minutes) {
             const patient = document.getElementById('timerPatient').value || "Unbekannt";
             const task = document.getElementById('timerTask').value || "Labor / Warten";
@@ -804,11 +947,9 @@
             saveData(); renderTimers();
             document.getElementById('timerPatient').value = ""; document.getElementById('timerTask').value = ""; document.getElementById('timerPatient').focus();
         }
-        function addCustomTimer() {
-            const mins = parseInt(document.getElementById('timerCustom').value);
-            if(mins > 0) { addTimer(mins); document.getElementById('timerCustom').value = ""; }
-        }
+        function addCustomTimer() { const mins = parseInt(document.getElementById('timerCustom').value); if(mins > 0) { addTimer(mins); document.getElementById('timerCustom').value = ""; } }
         function deleteTimer(id) { appData.timers = appData.timers.filter(t => t.id !== id); saveData(); renderTimers(); }
+        
         function renderTimers() {
             const list = document.getElementById('timerList');
             list.innerHTML = '';
@@ -837,6 +978,7 @@
             });
             updateTimerDisplays(Date.now());
         }
+
         function updateTimerDisplays(now) {
             appData.timers.forEach(timer => {
                 const display = document.querySelector(`.timer-display[data-id="${timer.id}"]`), progress = document.querySelector(`.progress-bar[data-id="${timer.id}"]`);
