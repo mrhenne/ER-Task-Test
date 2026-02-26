@@ -295,7 +295,7 @@
                 
                 <div class="panel-content flex flex-col">
                     <div class="p-3 bg-white/10 dark:bg-white/5 space-y-2 shrink-0 border-b border-white/40 dark:border-white/10">
-                        <select id="sopSelect" class="w-full text-xs font-bold p-2 rounded-lg glass-input outline-none text-slate-800 dark:text-white cursor-pointer" onchange="updateSOPView()">
+                        <select id="sopSelect" class="w-full text-sm font-bold p-2 rounded-lg glass-input outline-none text-slate-800 dark:text-white cursor-pointer" onchange="updateSOPView()">
                             <option value="">-- Wähle Top 10 SOP --</option>
                             <option value="Reanimation">1. Reanimation (ALS)</option>
                             <option value="Polytrauma">2. Polytrauma</option>
@@ -309,13 +309,13 @@
                             <option value="Atemnot">10. Akute Atemnot (COPD/Asthma)</option>
                         </select>
                         
-                        <div id="sopFacts" class="text-[10px] font-medium text-slate-700 dark:text-slate-300 bg-white/60 dark:bg-black/20 p-2 rounded-lg border border-white/80 dark:border-white/10 min-h-[40px] flex items-center shadow-sm">
+                        <div id="sopFacts" class="text-xs font-medium text-slate-700 dark:text-slate-300 bg-white/60 dark:bg-black/20 p-2.5 rounded-lg border border-white/80 dark:border-white/10 min-h-[40px] flex items-center shadow-sm">
                             SOP auswählen für Hard Facts...
                         </div>
                         
                         <div class="flex gap-2 pt-1">
-                            <input type="text" id="srCustomInput" placeholder="Freitext Log..." class="flex-1 text-[10px] p-2 rounded glass-input outline-none text-slate-800 dark:text-white" onkeypress="if(event.key === 'Enter') addSrLogCustom()">
-                            <button onclick="addSrLogCustom()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded transition text-[10px] font-bold shadow-sm"><i class="fa-solid fa-check"></i></button>
+                            <input type="text" id="srCustomInput" placeholder="Freitext Log..." class="flex-1 text-xs p-2 rounded glass-input outline-none text-slate-800 dark:text-white" onkeypress="if(event.key === 'Enter') addSrLogCustom()">
+                            <button onclick="addSrLogCustom()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded transition text-xs font-bold shadow-sm"><i class="fa-solid fa-check"></i></button>
                         </div>
 
                         <div id="sopActionBtns" class="flex flex-wrap gap-1.5 mt-1">
@@ -323,13 +323,13 @@
                         </div>
                     </div>
 
-                    <div class="overflow-y-auto p-2 bg-white/5 dark:bg-transparent max-h-[300px] custom-scrollbar space-y-1" id="srLogList">
+                    <div class="overflow-y-auto p-2 bg-white/5 dark:bg-transparent max-h-[300px] custom-scrollbar space-y-1.5" id="srLogList">
                         <!-- Logs go here -->
                     </div>
 
                     <div class="p-2 border-t border-white/40 dark:border-white/10 flex gap-2 shrink-0 bg-white/10 dark:bg-white/5">
-                        <button onclick="copySrLog()" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-white dark:bg-white/10 dark:hover:bg-white/20 rounded transition text-[10px] font-bold flex justify-center items-center gap-1.5 shadow-sm"><i class="fa-regular fa-copy"></i> Log Kopieren</button>
-                        <button onclick="clearSrLog()" class="px-3 py-1.5 glass-input text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 rounded transition text-[10px] font-bold"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="copySrLog()" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-white dark:bg-white/10 dark:hover:bg-white/20 rounded transition text-xs font-bold flex justify-center items-center gap-1.5 shadow-sm"><i class="fa-regular fa-copy"></i> Log Kopieren</button>
+                        <button onclick="clearSrLog()" class="px-3 py-1.5 glass-input text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 rounded transition text-xs font-bold"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             </div>
@@ -708,14 +708,14 @@
                 factsEl.innerHTML = `<span class="text-purple-600 dark:text-purple-400 mr-1"><i class="fa-solid fa-bolt"></i></span> ` + data.facts;
                 
                 data.actions.forEach(action => {
-                    btnsEl.innerHTML += `<button onclick="addSrLog('${action}')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 dark:bg-purple-900/40 dark:hover:bg-purple-800/60 dark:text-purple-300 dark:border dark:border-purple-500/30 px-2 py-1 rounded transition text-[10px] font-bold shadow-sm">${action}</button>`;
+                    btnsEl.innerHTML += `<button onclick="addSrLog('${action}')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 dark:bg-purple-900/40 dark:hover:bg-purple-800/60 dark:text-purple-300 dark:border dark:border-purple-500/30 px-2.5 py-1.5 rounded transition text-xs font-bold shadow-sm">${action}</button>`;
                 });
             } else {
                 factsEl.innerHTML = "SOP auswählen für Hard Facts und Quick-Buttons...";
             }
 
             defaultActions.forEach(action => {
-                btnsEl.innerHTML += `<button onclick="addSrLog('${action}')" class="bg-white/60 hover:bg-white text-slate-700 dark:bg-slate-800/60 dark:hover:bg-slate-700 dark:text-slate-300 dark:border dark:border-white/10 px-2 py-1 rounded transition text-[10px] font-bold shadow-sm">${action}</button>`;
+                btnsEl.innerHTML += `<button onclick="addSrLog('${action}')" class="bg-white/60 hover:bg-white text-slate-700 dark:bg-slate-800/60 dark:hover:bg-slate-700 dark:text-slate-300 dark:border dark:border-white/10 px-2.5 py-1.5 rounded transition text-xs font-bold shadow-sm">${action}</button>`;
             });
         }
 
@@ -739,14 +739,14 @@
             const list = document.getElementById('srLogList');
             list.innerHTML = '';
             if(appData.srLog.length === 0) {
-                list.innerHTML = '<div class="text-center text-slate-400 dark:text-slate-500 text-[10px] py-4 font-mono">Log ist leer</div>';
+                list.innerHTML = '<div class="text-center text-slate-400 dark:text-slate-500 text-xs py-4 font-mono">Log ist leer</div>';
                 return;
             }
             
             const sortedLogs = [...appData.srLog].sort((a,b) => b.id - a.id);
             
             sortedLogs.forEach(entry => {
-                list.innerHTML += `<div class="flex items-start gap-2 text-[10px] border-b border-white/20 dark:border-white/5 pb-1"><span class="font-mono font-bold text-slate-500 dark:text-slate-400">[${entry.time}]</span><span class="font-medium text-slate-800 dark:text-slate-200">${entry.text}</span></div>`;
+                list.innerHTML += `<div class="flex items-start gap-2 text-xs border-b border-white/20 dark:border-white/5 pb-1.5"><span class="font-mono font-bold text-slate-500 dark:text-slate-400">[${entry.time}]</span><span class="font-medium text-slate-800 dark:text-slate-200">${entry.text}</span></div>`;
             });
         }
 
