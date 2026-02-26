@@ -79,6 +79,7 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        /* Deep Liquid Glass Effects */
         .glass-panel {
             background: rgba(255, 255, 255, 0.35);
             backdrop-filter: blur(28px);
@@ -119,6 +120,8 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.6); }
+        .dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
         
         .dark .text-glow-green { text-shadow: 0 0 15px rgba(16, 185, 129, 0.7); }
         .dark .text-glow-red { text-shadow: 0 0 15px rgba(239, 68, 68, 0.7); }
@@ -129,76 +132,90 @@
             margin: 0;
         }
 
-        /* Panel Drag & Drop */
-        .dashboard-panel { transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease; }
-        .panel-dragging { 
-            opacity: 0.6; 
-            transform: scale(0.98); 
+        /* Panel Drag & Drop Styling */
+        .dashboard-panel {
+            transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+        }
+        .panel-dragging {
+            opacity: 0.6;
+            transform: scale(0.98);
             box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
             z-index: 50;
         }
         .panel-drag-over {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(16, 185, 129, 0.05);
             border-radius: 1rem;
             box-shadow: inset 0 0 0 2px rgba(16, 185, 129, 0.5);
         }
-        
-        /* Task Drag & Drop */
-        .task-item { transition: transform 0.2s ease, opacity 0.2s ease; }
-        .task-dragging { opacity: 0.4; transform: scale(0.98); }
-        .task-drag-over { border-top: 2px solid #10b981; }
+
+        /* Task Drag & Drop Styles */
+        .task-item {
+            transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+        }
+        .task-dragging {
+            opacity: 0.4;
+            transform: scale(0.98);
+        }
+        .task-drag-over {
+            border-top: 2px solid #10b981;
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden relative bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-fuchsia-50">
 
     <audio id="gongSound" src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" preload="auto"></audio>
 
-    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none opacity-60 dark:opacity-40">
-        <div class="absolute top-[-15%] left-[-10%] w-[40rem] h-[40rem] bg-helios-400 dark:bg-helios-500 rounded-full filter blur-[120px] animate-blob"></div>
-        <div class="absolute top-[10%] right-[-15%] w-[45rem] h-[45rem] bg-teal-300 dark:bg-teal-600 rounded-full filter blur-[130px] animate-blob" style="animation-delay: 3s"></div>
-        <div class="absolute bottom-[-25%] left-[15%] w-[50rem] h-[50rem] bg-emerald-200 dark:bg-cyan-900 rounded-full filter blur-[140px] animate-blob" style="animation-delay: 6s"></div>
+    <!-- Massive Liquid Background Blobs -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none transition-opacity duration-700 opacity-60 dark:opacity-40">
+        <div class="absolute top-[-15%] left-[-10%] w-[40rem] h-[40rem] bg-helios-400 dark:bg-helios-500 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[120px] dark:blur-[140px] animate-blob"></div>
+        <div class="absolute top-[10%] right-[-15%] w-[45rem] h-[45rem] bg-teal-300 dark:bg-teal-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[130px] dark:blur-[150px] animate-blob" style="animation-delay: 3s"></div>
+        <div class="absolute bottom-[-25%] left-[15%] w-[50rem] h-[50rem] bg-emerald-200 dark:bg-cyan-900 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[140px] dark:blur-[160px] animate-blob" style="animation-delay: 6s"></div>
     </div>
 
+    <!-- Header mit absoluter Zentrierung für die Uhr -->
     <header class="glass-panel z-20 p-4 flex justify-between items-center shrink-0 relative">
+        <!-- Logo & Title (Left) -->
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 shrink-0 rounded-full bg-helios-100 dark:bg-helios-500/20 flex items-center justify-center border border-helios-300 dark:border-helios-400/50 shadow-sm">
+            <div class="w-10 h-10 shrink-0 rounded-full bg-helios-100 dark:bg-helios-500/20 flex items-center justify-center border border-helios-300 dark:border-helios-400/50 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                 <i class="fa-solid fa-heart-pulse text-helios-600 dark:text-helios-400 text-xl dark:text-glow-green"></i>
             </div>
             <h1 class="text-xl font-bold tracking-tight text-slate-800 dark:text-white hidden md:flex items-center whitespace-nowrap">
-                ER Task Radar <span class="text-helios-600 dark:text-helios-400 text-sm font-normal ml-3 tracking-widest uppercase">Helios Duisburg</span>
+                ER Task Radar <span class="text-helios-600 dark:text-helios-400 text-sm font-normal ml-3 tracking-widest uppercase">Helios Klinik Duisburg</span>
             </h1>
         </div>
         
+        <!-- Clock & Weather (Absolute Center) -->
         <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pointer-events-none">
             <div id="clock" class="text-3xl md:text-5xl font-bold font-mono text-helios-700 dark:text-white dark:text-glow-green tracking-tighter drop-shadow-md">00:00:00</div>
-            <div class="flex items-center gap-2 mt-1">
-                <div id="date" class="text-[10px] md:text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest drop-shadow-sm">Datum</div>
+            <div class="flex items-center gap-3 mt-1">
+                <div id="date" class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest drop-shadow-sm">Datum</div>
                 <div class="w-1 h-1 rounded-full bg-slate-400 dark:bg-slate-500"></div>
-                <div id="weather" class="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest drop-shadow-sm flex items-center gap-1">
+                <!-- Weather Widget -->
+                <div id="weather" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest drop-shadow-sm flex items-center gap-1.5">
                     <i class="fa-solid fa-spinner fa-spin"></i>
                 </div>
             </div>
         </div>
 
-        <div class="flex items-center gap-2 lg:gap-4">
-            <div class="hidden xl:flex items-center gap-1.5 mr-2 border-r border-slate-300 dark:border-slate-600 pr-4">
-                <button class="w-9 h-9 rounded-lg text-slate-500 hover:text-helios-600 hover:bg-white/50 dark:text-slate-400 dark:hover:text-helios-400 transition flex items-center justify-center" title="Orbis"><i class="fa-solid fa-desktop"></i></button>
-                <button class="w-9 h-9 rounded-lg text-slate-500 hover:text-helios-600 hover:bg-white/50 dark:text-slate-400 dark:hover:text-helios-400 transition flex items-center justify-center" title="Intranet"><i class="fa-solid fa-globe"></i></button>
-            </div>
-            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white/50 dark:bg-slate-700/50 border border-white/60 dark:border-white/10 text-slate-600 dark:text-yellow-400 flex items-center justify-center shadow-sm shrink-0">
-                <i class="fa-solid fa-moon dark:hidden"></i><i class="fa-solid fa-sun hidden dark:block"></i>
+        <!-- Controls (Right) -->
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white/50 dark:bg-slate-700/50 border border-white/60 dark:border-white/10 text-slate-600 dark:text-yellow-400 flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-600/80 transition backdrop-blur-md shadow-sm">
+                <i class="fa-solid fa-moon dark:hidden"></i>
+                <i class="fa-solid fa-sun hidden dark:block"></i>
             </button>
-            <button onclick="clearAllData()" class="bg-white/50 dark:bg-slate-700/50 hover:bg-red-50 dark:hover:bg-red-900/40 border border-white/60 dark:border-white/10 text-slate-600 dark:text-slate-300 px-4 py-2 rounded-lg text-sm transition font-medium flex items-center gap-2 shrink-0">
+
+            <button onclick="clearAllData()" class="bg-white/50 dark:bg-slate-700/50 hover:bg-red-50 dark:hover:bg-red-900/40 border border-white/60 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 px-4 py-2 rounded-lg text-sm transition font-medium flex items-center gap-2 backdrop-blur-md shadow-sm">
                 <i class="fa-solid fa-power-off"></i> <span class="hidden lg:inline">Shift Reset</span>
             </button>
         </div>
     </header>
 
+    <!-- Main Grid - Columns wrap draggable panels -->
     <main class="flex-1 p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-y-auto align-top z-10 relative" id="dashboard-grid">
         
-        <!-- Spalte 1 -->
+        <!-- Column 1 -->
         <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300" id="col-0">
-            <!-- Panel: Timer -->
+            <!-- Panel: Timers -->
             <div class="dashboard-panel glass-panel rounded-2xl flex flex-col max-h-full overflow-hidden" id="panel-timers">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
@@ -206,188 +223,270 @@
                         <i class="fa-solid fa-stopwatch text-helios-600 dark:text-helios-400"></i> Aktive Timer
                     </h2>
                 </div>
+                
                 <div class="p-4 border-b border-white/40 dark:border-white/10 space-y-3 bg-white/10 dark:bg-white/5">
-                    <input type="text" id="timerPatient" placeholder="Patient / Raum" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none">
-                    <input list="taskOptions" id="timerTask" placeholder="Aufgabe..." class="w-full text-sm p-2.5 rounded-lg glass-input outline-none">
+                    <input type="text" id="timerPatient" placeholder="Patient / Zimmer / Bett" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
+                    <input list="taskOptions" id="timerTask" placeholder="Was? (z.B. Labor, Re-Eval)" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
                     <datalist id="taskOptions">
-                        <option value="Labor (allg.)"><option value="Troponin"><option value="CRP"><option value="Analgesie Re-Eval"><option value="Arztinfo">
+                        <option value="Labor (allg.)"><option value="Troponin"><option value="CRP"><option value="Abstriche"><option value="Blutkulturen"><option value="BGA"><option value="Urin"><option value="Analgesie Re-Eval"><option value="EKG"><option value="Arztinfo">
                     </datalist>
                     <div class="flex gap-2">
-                        <button onclick="addTimer(20)" class="flex-1 glass-input hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg font-bold">20m</button>
-                        <button onclick="addTimer(45)" class="flex-1 glass-input hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg font-bold">45m</button>
-                        <button onclick="addTimer(60)" class="flex-1 glass-input hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg font-bold">60m</button>
+                        <button onclick="addTimer(20)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">20m</button>
+                        <button onclick="addTimer(45)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">45m</button>
+                        <button onclick="addTimer(60)" class="flex-1 glass-input hover:bg-white/80 dark:hover:bg-helios-500/20 text-slate-700 dark:text-slate-300 hover:text-helios-700 dark:hover:text-white text-xs py-2 rounded-lg transition font-bold shadow-sm">60m</button>
                         <input type="number" id="timerCustom" placeholder="Min" class="w-16 text-sm p-2 rounded-lg glass-input outline-none text-center text-slate-800 dark:text-white shadow-sm">
-                        <button onclick="addCustomTimer()" class="bg-helios-600 hover:bg-helios-500 text-white px-3 py-1 rounded-lg transition shadow-md"><i class="fa-solid fa-plus"></i></button>
+                        <button onclick="addCustomTimer()" class="bg-helios-600 hover:bg-helios-500 text-white dark:bg-helios-500/40 dark:hover:bg-helios-500/60 dark:border dark:border-helios-400/50 dark:text-white px-3 py-1 rounded-lg transition shadow-md dark:shadow-[0_0_15px_rgba(16,185,129,0.3)]"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
-                <div id="timerList" class="p-4 overflow-y-auto flex-1 space-y-4 custom-scrollbar"></div>
+
+                <div id="timerList" class="p-4 overflow-y-auto flex-1 space-y-4 custom-scrollbar bg-white/5 dark:bg-transparent">
+                    <!-- Timers injected here -->
+                </div>
             </div>
         </div>
 
-        <!-- Spalte 2 -->
+        <!-- Column 2 -->
         <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300" id="col-1">
-            <!-- Panel: Transporte -->
+            <!-- Panel: Transports -->
             <div class="dashboard-panel glass-panel rounded-2xl flex flex-col max-h-full overflow-hidden" id="panel-transports">
                 <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
-                        <i class="fa-solid fa-bed-pulse text-indigo-500 dark:text-indigo-400"></i> Transporte
+                        <i class="fa-solid fa-bed-pulse text-indigo-500 dark:text-indigo-400"></i> Transport Radar
                     </h2>
                 </div>
+                
                 <div class="p-4 border-b border-white/40 dark:border-white/10 space-y-3 bg-white/10 dark:bg-white/5">
-                    <input type="text" id="transPatient" placeholder="Patient / Raum" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none">
+                    <input type="text" id="transPatient" placeholder="Patient / Zimmer" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500">
                     <div class="flex gap-2">
-                        <input list="zielOptions" id="transZiel" placeholder="Ziel..." class="flex-1 text-sm p-2.5 rounded-lg glass-input outline-none">
+                        <input list="zielOptions" id="transZiel" placeholder="Ziel..." class="flex-1 w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white font-medium placeholder-slate-400 dark:placeholder-slate-500">
                         <datalist id="zielOptions">
-                            <option value="CT"><option value="Röntgen"><option value="Station"><option value="Entlassung">
+                            <option value="Entlassung / Heim"><option value="Rücktransport"><option value="Verlegung Extern"><option value="Verlegung Intern"><option value="CT"><option value="Röntgen"><option value="Station"><option value="OP"><option value="Herzkatheter">
                         </datalist>
-                        <input type="time" id="transTime" class="w-24 text-sm p-2.5 rounded-lg glass-input outline-none">
+                        <input type="time" id="transTime" title="Ziel-Uhrzeit (leer = sofort)" class="w-26 text-sm p-2.5 rounded-lg glass-input outline-none text-center text-slate-800 dark:text-white">
                     </div>
-                    <button onclick="addTransport()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm py-2.5 rounded-lg transition font-bold shadow-md"><i class="fa-solid fa-truck-medical mr-2"></i> Anlegen</button>
+                    <button onclick="addTransport()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white dark:bg-indigo-500/30 dark:hover:bg-indigo-500/50 dark:border dark:border-indigo-400/50 dark:text-white text-sm py-2.5 rounded-lg transition font-bold shadow-md dark:shadow-[0_0_15px_rgba(99,102,241,0.3)]"><i class="fa-solid fa-truck-medical mr-2"></i> Transport anlegen</button>
                 </div>
-                <div id="transportList" class="p-4 overflow-y-auto flex-1 space-y-3 custom-scrollbar"></div>
+
+                <div id="transportList" class="p-4 overflow-y-auto flex-1 space-y-3 custom-scrollbar bg-white/5 dark:bg-transparent">
+                    <!-- Transports injected here -->
+                </div>
             </div>
         </div>
 
-        <!-- Spalte 3 -->
-        <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300 lg:col-span-1 min-h-0" id="col-2">
-            <!-- Panel: Vitalerfassung -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden min-h-0 border-pink-200 dark:border-pink-900/30" id="panel-vitals">
-                <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent shrink-0 cursor-default">
+        <!-- Column 3 -->
+        <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300" id="col-2">
+            <!-- Panel: Vitals -->
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col max-h-full overflow-hidden" id="panel-vitals">
+                <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
-                        <i class="fa-solid fa-heartbeat text-pink-500 dark:text-pink-400"></i> Vitalerfassung
+                        <i class="fa-solid fa-heartbeat text-pink-500 dark:text-pink-400"></i> Vital Zwischenablage
                     </h2>
-                    <button onclick="addVitalsCard()" class="text-[10px] font-bold bg-pink-500 text-white px-2.5 py-1 rounded hover:bg-pink-400 transition shadow-sm uppercase tracking-wider">
-                        <i class="fa-solid fa-plus mr-1"></i> Neu
-                    </button>
                 </div>
-                <div id="vitalsContainer" class="p-4 space-y-6 overflow-y-auto flex-1 custom-scrollbar bg-white/5 dark:bg-transparent">
-                    <!-- Vital-Karten werden hier injiziert -->
-                </div>
-            </div>
+                
+                <div class="p-4 space-y-4 overflow-y-auto flex-1 custom-scrollbar bg-white/5 dark:bg-transparent">
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">Patienten Info optional</label>
+                        <input type="text" id="vitPatient" placeholder="Name oder Raum" class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400">
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs font-bold text-red-500 dark:text-red-400 mb-1.5 block uppercase tracking-widest drop-shadow-sm"><i class="fa-solid fa-triangle-exclamation"></i> Allergien</label>
+                        <input type="text" id="vitAllergies" placeholder="Keine bekannt / Penicillin..." class="w-full text-sm p-2.5 rounded-lg bg-red-50/50 dark:bg-red-900/20 border border-red-300 dark:border-red-500/40 focus:border-red-500 outline-none text-slate-800 dark:text-white backdrop-blur-md shadow-sm transition placeholder-red-300 dark:placeholder-red-400/50">
+                        <div class="flex flex-wrap gap-1.5 mt-2">
+                            <button onclick="addAllergy('Penicillin')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Penicillin</button>
+                            <button onclick="addAllergy('Novalgin')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Novalgin</button>
+                            <button onclick="addAllergy('Pflaster')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Pflaster</button>
+                            <button onclick="addAllergy('KM')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">KM</button>
+                            <button onclick="addAllergy('Latex')" class="text-[10px] font-bold bg-white/60 dark:bg-red-900/40 text-red-700 dark:text-red-300 px-2 py-1 rounded border border-red-200 dark:border-red-500/30 hover:bg-white dark:hover:bg-red-900/60 transition backdrop-blur-sm shadow-sm">Latex</button>
+                            <button onclick="setAllergy('Keine bekannt')" class="text-[10px] font-bold bg-emerald-100/60 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded border border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition backdrop-blur-sm shadow-sm">Keine</button>
+                        </div>
+                    </div>
 
-            <!-- Panel: Kalender -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col shrink-0 overflow-hidden bg-white/60 dark:bg-slate-800/60 shadow-md" id="panel-calendar">
-                <div class="p-3 border-b border-white/60 dark:border-white/10 flex justify-between items-center cursor-default">
-                    <h2 class="font-bold flex items-center text-slate-800 dark:text-white text-sm drop-shadow-sm">
-                        <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-2 mr-1"><i class="fa-solid fa-grip-vertical"></i></div>
-                        <i class="fa-regular fa-calendar text-sky-500 dark:text-sky-400 mr-2"></i> <span id="calMonthYear">Monat</span>
-                    </h2>
-                    <div class="flex gap-2 text-xs">
-                        <button onclick="prevMonth()" class="w-6 h-6 rounded flex items-center justify-center text-slate-500 hover:bg-white dark:hover:bg-white/10 transition"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button onclick="nextMonth()" class="w-6 h-6 rounded flex items-center justify-center text-slate-500 hover:bg-white dark:hover:bg-white/10 transition"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">RR mmHg</label>
+                            <input type="text" id="vitRR" placeholder="120/80" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">HF /min</label>
+                            <input type="number" id="vitHF" placeholder="80" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">AF /min</label>
+                            <input type="number" id="vitAF" placeholder="15" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                        </div>
                     </div>
-                </div>
-                <div class="p-3 bg-white/20 dark:bg-white/5">
-                    <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wider">
-                        <div>Mo</div><div>Di</div><div>Mi</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">SpO2 %</label>
+                            <input type="number" id="vitSpO2" placeholder="98" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">Temp °C</label>
+                            <input type="number" step="0.1" id="vitTemp" placeholder="37.0" class="w-full text-base font-mono p-2.5 rounded-lg glass-input outline-none text-center text-helios-700 dark:text-helios-400 placeholder-slate-300 dark:placeholder-slate-600 font-bold">
+                        </div>
                     </div>
-                    <div id="calendarGrid" class="grid grid-cols-7 gap-y-1 gap-x-1 text-center text-sm font-medium text-slate-700 dark:text-slate-300"></div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 block tracking-wide">GCS / BZ / Sonstiges</label>
+                        <input type="text" id="vitMisc" placeholder="BZ 120, GCS 15..." class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400">
+                    </div>
+                    
+                    <div class="pt-2 flex gap-3">
+                        <button onclick="copyVitals()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white dark:bg-white/10 dark:hover:bg-white/20 dark:border dark:border-white/30 py-2.5 rounded-lg transition font-bold text-sm flex justify-center items-center gap-2 shadow-md backdrop-blur-md">
+                            <i class="fa-regular fa-copy"></i> Kopieren
+                        </button>
+                        <button onclick="clearVitals()" class="glass-input hover:bg-red-50 dark:hover:bg-red-900/40 text-slate-700 hover:text-red-600 dark:text-red-400 px-4 py-2.5 rounded-lg transition shadow-sm">
+                            <i class="fa-solid fa-eraser"></i>
+                        </button>
+                    </div>
+                    <div id="copyToast" class="hidden text-center text-xs font-bold text-helios-700 bg-helios-100/80 border border-helios-300 dark:text-helios-300 dark:bg-helios-500/20 dark:border-helios-400/50 p-2.5 rounded-lg mt-2 backdrop-blur-md shadow-lg">Kopiert für Orbis!</div>
                 </div>
             </div>
         </div>
 
-        <!-- Spalte 4 -->
-        <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300 lg:col-span-1 min-h-0" id="col-3">
+        <!-- Column 4 -->
+        <div class="panel-col flex flex-col gap-4 h-full min-h-[100px] transition-colors duration-300 lg:col-span-1" id="col-3">
             
-            <!-- Panel: Notfall Stoppuhr -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col shrink-0 overflow-hidden bg-red-50/50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30 transition-all shadow-sm" id="panel-stopwatch">
-                <div class="p-3 border-b border-white/40 dark:border-white/5 flex justify-between items-center bg-red-100/30 dark:bg-red-900/20 cursor-default">
-                    <h2 class="font-bold flex items-center gap-2 text-red-700 dark:text-red-400 text-sm drop-shadow-sm">
-                        <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-red-400 hover:text-red-600 dark:hover:text-red-300 transition rounded hover:bg-red-200/50 dark:hover:bg-red-900/40 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
-                        <i class="fa-solid fa-stopwatch-20"></i> Notfall Stoppuhr
+            <!-- Panel: Quick Timer & Stopwatch -->
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col shrink-0 overflow-hidden" id="panel-quicktimer">
+                <div class="p-3 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-sky-50/50 dark:bg-sky-900/10 cursor-default">
+                    <h2 class="font-bold flex items-center gap-2 text-sky-700 dark:text-sky-400 text-sm drop-shadow-sm">
+                        <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-sky-400 hover:text-sky-600 dark:hover:text-sky-300 transition rounded hover:bg-sky-200/50 dark:hover:bg-sky-900/40 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
+                        <i class="fa-solid fa-stopwatch"></i> Timer / Stoppuhr
                     </h2>
-                    <div class="font-mono text-2xl font-bold text-red-600 dark:text-red-400 drop-shadow-sm tracking-wider" id="globalStopwatch">00:00</div>
+                    <div class="font-mono text-xl font-bold text-sky-600 dark:text-sky-400 drop-shadow-sm tracking-wider" id="qtDisplay">00:00</div>
                 </div>
                 <div class="p-2 flex gap-2 bg-white/20 dark:bg-white/5">
-                    <button onclick="toggleStopwatch()" id="swToggleBtn" class="flex-1 bg-red-600 hover:bg-red-500 text-white text-xs py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-1.5"><i class="fa-solid fa-play"></i> Start</button>
-                    <button onclick="resetStopwatch()" class="w-10 glass-input hover:bg-red-100 dark:hover:bg-red-900/40 text-red-700 dark:text-red-400 text-xs py-2 rounded-lg transition font-bold flex items-center justify-center"><i class="fa-solid fa-rotate-left"></i></button>
-                    <button onclick="toggleReaMode()" id="reaModeBtn" class="flex-1 glass-input hover:bg-red-100 dark:hover:bg-red-900/40 text-red-700 dark:text-red-400 text-xs py-2 rounded-lg transition font-bold border-red-300 dark:border-red-800/50 flex items-center justify-center gap-1.5">2 Min Rea-Loop</button>
+                    <input type="number" id="qtInput" placeholder="Min" title="Zahl = Timer | Leer = Stoppuhr" class="w-16 text-sm p-2 rounded-lg glass-input text-center outline-none text-slate-800 dark:text-white">
+                    <button onclick="toggleQuickTimer()" id="qtToggleBtn" class="flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-1.5"><i class="fa-solid fa-play"></i> Start</button>
+                    <button onclick="resetQuickTimer()" class="w-10 glass-input hover:bg-red-100 dark:hover:bg-red-900/40 text-red-700 dark:text-red-400 text-xs py-2 rounded-lg transition font-bold flex items-center justify-center"><i class="fa-solid fa-rotate-left"></i></button>
                 </div>
             </div>
 
             <!-- Panel: Checkliste -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden min-h-0" id="panel-tasks">
-                <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent shrink-0 cursor-default">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden" id="panel-checklist">
+                <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-solid fa-list-check text-amber-500 dark:text-amber-400"></i> Checkliste
                     </h2>
+                    <span class="text-[10px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-widest bg-white/40 dark:bg-white/10 px-2 py-1 rounded backdrop-blur-sm border border-white/50 dark:border-white/10">Auto Save</span>
                 </div>
-                <div class="p-4 flex-1 flex flex-col overflow-hidden bg-white/5">
-                    <div class="flex gap-2 mb-4 shrink-0">
-                        <input type="text" id="newTaskInput" placeholder="Neue Aufgabe..." class="w-full text-sm p-2.5 rounded-lg glass-input outline-none" onkeypress="if(event.key === 'Enter') addTask()">
-                        <button onclick="addTask()" class="bg-amber-500 text-white px-4 rounded-lg font-bold shadow-md"><i class="fa-solid fa-plus"></i></button>
+                <div class="p-4 flex-1 flex flex-col overflow-hidden bg-white/5 dark:bg-transparent">
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="newTaskInput" placeholder="Neue Aufgabe..." class="w-full text-sm p-2.5 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400" onkeypress="if(event.key === 'Enter') addTask()">
+                        <button onclick="addTask()" class="bg-amber-500 hover:bg-amber-400 text-white dark:bg-amber-500/40 dark:hover:bg-amber-500/60 dark:border dark:border-amber-400/50 px-4 rounded-lg transition font-bold shadow-md dark:shadow-[0_0_15px_rgba(245,158,11,0.2)]"><i class="fa-solid fa-plus"></i></button>
                     </div>
-                    <div id="taskList" class="flex-1 overflow-y-auto space-y-2 custom-scrollbar pr-1 mb-2 pb-4"></div>
+                    <div id="taskList" class="flex-1 overflow-y-auto space-y-2 custom-scrollbar pr-1 mb-2 pb-4">
+                        <!-- Tasks injected here -->
+                    </div>
                 </div>
             </div>
 
             <!-- Panel: Notizen -->
-            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden min-h-0" id="panel-notes">
-                <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent shrink-0 cursor-default">
+            <div class="dashboard-panel glass-panel rounded-2xl flex flex-col flex-1 overflow-hidden" id="panel-notes">
+                <div class="p-4 border-b border-white/40 dark:border-white/10 flex justify-between items-center bg-white/20 dark:bg-transparent cursor-default">
                     <h2 class="font-bold flex items-center gap-2 text-slate-800 dark:text-white drop-shadow-sm">
                         <div class="drag-handle cursor-move w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white transition rounded hover:bg-white/30 dark:hover:bg-white/10 -ml-1"><i class="fa-solid fa-grip-vertical"></i></div>
                         <i class="fa-regular fa-note-sticky text-yellow-500 dark:text-yellow-400"></i> Notizen
                     </h2>
+                    <span class="text-[10px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-widest bg-white/40 dark:bg-white/10 px-2 py-1 rounded backdrop-blur-sm border border-white/50 dark:border-white/10">Auto Save</span>
                 </div>
-                <div class="p-4 flex-1 flex flex-col overflow-hidden bg-white/5">
-                    <textarea id="notesArea" placeholder="Schnelle Notizen..." class="w-full h-full p-3 rounded-lg glass-input outline-none resize-none custom-scrollbar text-sm" oninput="saveNotes()"></textarea>
+                <div class="p-4 flex-1 flex flex-col overflow-hidden bg-white/5 dark:bg-transparent">
+                    <textarea id="notesArea" placeholder="Schnelle Notizen, Übergabe-Infos..." class="w-full h-full p-3 rounded-lg glass-input outline-none text-slate-800 dark:text-white placeholder-slate-400 resize-none custom-scrollbar text-sm" oninput="saveNotes()"></textarea>
                 </div>
             </div>
+
         </div>
+
     </main>
 
-    <div id="copyToast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 text-center text-xs font-bold text-helios-700 bg-helios-100/90 border border-helios-300 dark:text-helios-300 dark:bg-helios-500/20 dark:border-helios-400/50 p-3 rounded-xl backdrop-blur-md shadow-2xl">Kopiert für Orbis!</div>
-
     <script>
-        // State
+        // State Management
         let appData = {
             timers: [],
             transports: [],
             tasks: [],
-            vitals: [{ id: Date.now(), patient: '', allergies: '', rr: '', hf: '', af: '', spo2: '', temp: '', misc: '' }],
             notes: "",
-            layout: [] // Speichert die Reihenfolge der Panels
+            layout: [], // Stores the order of panels in columns
+            qt: { mode: 'idle', endTime: 0, startTime: 0, elapsed: 0, running: false }
         };
 
-        let currentCalDate = new Date();
+        // Audio Setup for Gong
         let audioUnlocked = false;
-        let draggedPanelEl = null; // Für das Fenster Drag & Drop
-
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-            startClock();
-            fetchWeather();
-            renderCalendar();
-            initPanelDragAndDrop();
-            setInterval(fetchWeather, 1800000); 
-            setInterval(updateAllTimers, 1000);
-        });
 
         function playGong() {
-            if(!audioUnlocked) return;
             const gong = document.getElementById('gongSound');
             if(gong) {
-                gong.volume = 0.5;
-                gong.play().catch(e => console.log("Audio blockiert"));
+                gong.volume = 1.0;
+                gong.play().catch(err => console.log("Audio blockiert"));
             }
         }
 
-        document.body.addEventListener('click', () => {
+        document.body.addEventListener('click', function unlockAudio() {
             if(!audioUnlocked) {
                 const gong = document.getElementById('gongSound');
-                gong.volume = 0;
-                gong.play().then(() => { gong.pause(); audioUnlocked = true; }).catch(e=>{});
+                if(gong) {
+                    gong.volume = 0;
+                    gong.play().then(() => { gong.pause(); gong.currentTime = 0; audioUnlocked = true; }).catch(e => {});
+                }
             }
         }, { once: true });
 
+        // Theme Toggle Logic
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
         }
+
+        // Live Weather via Open-Meteo API
+        async function fetchWeather() {
+            const weatherEl = document.getElementById('weather');
+            if(!weatherEl) return;
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=51.4324&longitude=6.7651&current=temperature_2m,weather_code');
+                const data = await res.json();
+                const temp = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+                
+                let iconClass = 'fa-sun text-yellow-500 dark:text-yellow-400'; 
+                if (code >= 1 && code <= 3) iconClass = 'fa-cloud-sun text-slate-400';
+                else if (code >= 45 && code <= 48) iconClass = 'fa-smog text-slate-400';
+                else if (code >= 51 && code <= 67) iconClass = 'fa-cloud-rain text-blue-500';
+                else if (code >= 71 && code <= 77) iconClass = 'fa-snowflake text-sky-400';
+                else if (code >= 80 && code <= 82) iconClass = 'fa-cloud-showers-heavy text-blue-600';
+                else if (code >= 95 && code <= 99) iconClass = 'fa-cloud-bolt text-purple-600';
+
+                weatherEl.innerHTML = `<i class="fa-solid ${iconClass}"></i> ${temp}°C`;
+            } catch (err) {
+                weatherEl.innerHTML = `<i class="fa-solid fa-cloud"></i> --°C`;
+            }
+        }
+
+        // Init & Loop
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            startClock();
+            fetchWeather();
+            initPanelDragAndDrop();
+            setInterval(fetchWeather, 1800000); 
+            setInterval(updateAllTimers, 1000);
+            
+            // Re-Initialize Quick Timer / Stopwatch
+            if(appData.qt.running) {
+                qtInterval = setInterval(updateQuickTimer, 100);
+                const btn = document.getElementById('qtToggleBtn');
+                btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+                btn.classList.replace('bg-sky-600', 'bg-amber-500');
+                btn.classList.replace('hover:bg-sky-500', 'hover:bg-amber-400');
+            } else if (appData.qt.mode !== 'idle') {
+                updateQuickTimerDisplay(); // Just show current paused state
+                const btn = document.getElementById('qtToggleBtn');
+                btn.innerHTML = '<i class="fa-solid fa-play"></i> Start';
+            }
+        });
 
         function startClock() {
             setInterval(() => {
@@ -397,142 +496,107 @@
             }, 1000);
         }
 
-        async function fetchWeather() {
-            const weatherEl = document.getElementById('weather');
-            if (!weatherEl) return;
-            
-            try {
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=51.4324&longitude=6.7651&current=temperature_2m,weather_code');
-                const data = await res.json();
-                const temp = Math.round(data.current.temperature_2m);
-                const code = data.current.weather_code;
-                
-                let iconClass = 'fa-sun text-yellow-500 dark:text-yellow-400'; 
-                if (code === 0) iconClass = 'fa-sun text-yellow-500 dark:text-yellow-400';
-                else if (code >= 1 && code <= 3) iconClass = 'fa-cloud-sun text-slate-400 dark:text-slate-300';
-                else if (code >= 45 && code <= 48) iconClass = 'fa-smog text-slate-400 dark:text-slate-300';
-                else if (code >= 51 && code <= 67) iconClass = 'fa-cloud-rain text-blue-500 dark:text-blue-400';
-                else if (code >= 71 && code <= 77) iconClass = 'fa-snowflake text-sky-400 dark:text-sky-300';
-                else if (code >= 80 && code <= 82) iconClass = 'fa-cloud-showers-heavy text-blue-600 dark:text-blue-500';
-                else if (code >= 95 && code <= 99) iconClass = 'fa-cloud-bolt text-purple-600 dark:text-purple-400';
-                
-                weatherEl.innerHTML = `<i class="fa-solid ${iconClass}"></i> ${temp}°C`;
-            } catch (err) {
-                weatherEl.innerHTML = `<i class="fa-solid fa-cloud"></i> --°C`;
-            }
+        // Data Persistence
+        function saveData() {
+            localStorage.setItem('erTaskRadar', JSON.stringify(appData));
         }
 
-        // Calendar
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const monthYear = document.getElementById('calMonthYear');
-            grid.innerHTML = '';
-            const year = currentCalDate.getFullYear();
-            const month = currentCalDate.getMonth();
-            const names = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-            monthYear.innerText = `${names[month]} ${year}`;
-            const first = new Date(year, month, 1).getDay();
-            const days = new Date(year, month + 1, 0).getDate();
-            let start = first === 0 ? 6 : first - 1;
-            const today = new Date();
-            for (let i = 0; i < start; i++) grid.innerHTML += `<div></div>`;
-            for (let i = 1; i <= days; i++) {
-                let isToday = today.getMonth() === month && today.getFullYear() === year && today.getDate() === i;
-                grid.innerHTML += `<div class="w-6 h-6 mx-auto flex items-center justify-center rounded-full text-[10px] ${isToday ? 'bg-helios-500 text-white font-bold' : ''}">${i}</div>`;
-            }
-        }
-        function prevMonth() { currentCalDate.setMonth(currentCalDate.getMonth() - 1); renderCalendar(); }
-        function nextMonth() { currentCalDate.setMonth(currentCalDate.getMonth() + 1); renderCalendar(); }
-
-        // Core Actions
-        function saveData() { localStorage.setItem('erTaskRadar', JSON.stringify(appData)); }
-        
         function loadData() {
             const saved = localStorage.getItem('erTaskRadar');
             if (saved) {
-                appData = JSON.parse(saved);
-                document.getElementById('notesArea').value = appData.notes || "";
-                renderTimers(); renderTransports(); renderTasks(); renderVitals();
+                const parsed = JSON.parse(saved);
+                appData.timers = parsed.timers || [];
+                appData.transports = parsed.transports || [];
+                appData.tasks = parsed.tasks || [];
+                appData.notes = parsed.notes || "";
+                appData.layout = parsed.layout || [];
+                
+                // Migrate old qtEndTime if it existed, otherwise use new struct
+                if (parsed.qtEndTime && parsed.qtEndTime > Date.now()) {
+                    appData.qt = { mode: 'timer', endTime: parsed.qtEndTime, startTime: 0, elapsed: 0, running: true };
+                } else {
+                    appData.qt = parsed.qt || { mode: 'idle', endTime: 0, startTime: 0, elapsed: 0, running: false };
+                }
+
+                document.getElementById('notesArea').value = appData.notes;
+
+                renderTimers();
+                renderTransports();
+                renderTasks();
                 applyLayout();
             }
         }
 
         function clearAllData() {
-            if(confirm('Schicht beenden und alle Daten löschen? Dein Layout bleibt erhalten.')) {
+            if(confirm('Achtung: Willst du wirklich alle Daten dieser Schicht löschen? Dein Layout bleibt erhalten.')) {
                 appData.timers = [];
                 appData.transports = [];
                 appData.tasks = [];
-                appData.vitals = [{ id: Date.now(), patient: '', allergies: '', rr: '', hf: '', af: '', spo2: '', temp: '', misc: '' }];
                 appData.notes = "";
+                clearVitals();
+                resetQuickTimer();
                 document.getElementById('notesArea').value = "";
-                resetStopwatch();
-                saveData(); 
-                loadData();
+                saveData();
+                renderTimers();
+                renderTransports();
+                renderTasks();
             }
         }
 
-        // ------------------
-        // PANEL DRAG & DROP
-        // ------------------
-        function initPanelDragAndDrop() {
-            const panels = document.querySelectorAll('.dashboard-panel');
-            const cols = document.querySelectorAll('.panel-col');
+        // ----------------------------------------------------
+        // PANEL DRAG & DROP LOGIC
+        // ----------------------------------------------------
+        let draggedPanel = null;
 
-            panels.forEach(panel => {
+        function initPanelDragAndDrop() {
+            document.querySelectorAll('.dashboard-panel').forEach(panel => {
                 const handle = panel.querySelector('.drag-handle');
                 if(handle) {
-                    // Draggable nur aktivieren, wenn man auf den Grip drückt (verhindert Probleme beim Text markieren)
                     handle.addEventListener('mousedown', () => panel.draggable = true);
                     handle.addEventListener('mouseup', () => panel.draggable = false);
                     panel.addEventListener('mouseleave', () => panel.draggable = false);
                 }
 
                 panel.addEventListener('dragstart', function(e) {
-                    if(!panel.draggable) { e.preventDefault(); return; }
-                    draggedPanelEl = this;
+                    if(!this.draggable) { e.preventDefault(); return; }
+                    draggedPanel = this;
+                    setTimeout(() => this.classList.add('panel-dragging'), 0);
                     e.dataTransfer.effectAllowed = 'move';
                     e.dataTransfer.setData('text/plain', this.id);
-                    setTimeout(() => this.classList.add('panel-dragging'), 0);
                 });
 
-                panel.addEventListener('dragend', function(e) {
+                panel.addEventListener('dragend', function() {
                     this.classList.remove('panel-dragging');
-                    cols.forEach(c => c.classList.remove('panel-drag-over'));
+                    document.querySelectorAll('.panel-col').forEach(c => c.classList.remove('panel-drag-over'));
                     this.draggable = false;
-                    draggedPanelEl = null;
-                    saveLayoutState();
+                    draggedPanel = null;
+                    saveLayout();
                 });
             });
 
-            cols.forEach(col => {
-                col.addEventListener('dragover', function(e) {
-                    // Ignoriere Drag-Events von den Tasks
-                    if(!draggedPanelEl || !draggedPanelEl.classList.contains('dashboard-panel')) return;
-                    
+            document.querySelectorAll('.panel-col').forEach(col => {
+                col.addEventListener('dragover', e => {
+                    if(!draggedPanel || !draggedPanel.classList.contains('dashboard-panel')) return;
                     e.preventDefault();
-                    this.classList.add('panel-drag-over');
+                    col.classList.add('panel-drag-over');
                     
-                    const afterElement = getDragAfterPanel(this, e.clientY);
+                    const afterElement = getDragAfterElement(col, e.clientY);
                     if (afterElement == null) {
-                        this.appendChild(draggedPanelEl);
+                        col.appendChild(draggedPanel);
                     } else {
-                        this.insertBefore(draggedPanelEl, afterElement);
+                        col.insertBefore(draggedPanel, afterElement);
                     }
                 });
-
-                col.addEventListener('dragleave', function(e) {
-                    if(!draggedPanelEl || !draggedPanelEl.classList.contains('dashboard-panel')) return;
-                    this.classList.remove('panel-drag-over');
+                col.addEventListener('dragleave', () => {
+                    if(draggedPanel && draggedPanel.classList.contains('dashboard-panel')) {
+                        col.classList.remove('panel-drag-over');
+                    }
                 });
-
-                col.addEventListener('drop', function(e) {
-                    if(!draggedPanelEl || !draggedPanelEl.classList.contains('dashboard-panel')) return;
-                    this.classList.remove('panel-drag-over');
-                });
+                col.addEventListener('drop', () => col.classList.remove('panel-drag-over'));
             });
         }
 
-        function getDragAfterPanel(container, y) {
+        function getDragAfterElement(container, y) {
             const draggableElements = [...container.querySelectorAll('.dashboard-panel:not(.panel-dragging)')];
             return draggableElements.reduce((closest, child) => {
                 const box = child.getBoundingClientRect();
@@ -545,309 +609,350 @@
             }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
-        function saveLayoutState() {
+        function saveLayout() {
             const layout = [];
             document.querySelectorAll('.panel-col').forEach(col => {
-                const colPanels = [];
-                col.querySelectorAll('.dashboard-panel').forEach(p => colPanels.push(p.id));
-                layout.push(colPanels);
+                layout.push([...col.querySelectorAll('.dashboard-panel')].map(p => p.id));
             });
             appData.layout = layout;
             saveData();
         }
 
         function applyLayout() {
-            if (!appData.layout || appData.layout.length !== 4) return;
+            if (!appData.layout || appData.layout.length === 0) return;
             const cols = document.querySelectorAll('.panel-col');
-            appData.layout.forEach((colPanels, index) => {
-                const col = cols[index];
-                colPanels.forEach(panelId => {
-                    const panel = document.getElementById(panelId);
-                    if (panel) col.appendChild(panel);
-                });
+            appData.layout.forEach((panelIds, i) => {
+                if(cols[i]) {
+                    panelIds.forEach(id => {
+                        const p = document.getElementById(id);
+                        if(p) cols[i].appendChild(p);
+                    });
+                }
             });
         }
 
-        // Global Stopwatch / Rea-Timer Logic
-        let swInterval = null;
-        let swRunning = false;
-        let swStartTime = 0;
-        let swElapsed = 0;
-        let reaMode = false;
-        let lastReaPing = 0;
+        // ----------------------------------------------------
+        // QUICK TIMER & STOPWATCH LOGIC
+        // ----------------------------------------------------
+        let qtInterval = null;
 
-        function formatSW(ms) {
-            const totalSec = Math.floor(ms / 1000);
-            const m = Math.floor(totalSec / 60).toString().padStart(2, '0');
-            const s = (totalSec % 60).toString().padStart(2, '0');
-            return `${m}:${s}`;
-        }
-
-        function unlockAudioIfNeeded() {
+        function toggleQuickTimer() {
+            // Unlock audio on interaction
             if(!audioUnlocked) {
                 const gong = document.getElementById('gongSound');
-                if(gong) { gong.volume = 0; gong.play().then(()=> { gong.pause(); audioUnlocked=true; }).catch(e=>{}); }
+                if(gong) { gong.volume = 0; gong.play().then(()=>{gong.pause(); audioUnlocked=true;}).catch(e=>{}); }
             }
-        }
 
-        function toggleStopwatch() {
-            unlockAudioIfNeeded();
-            const btn = document.getElementById('swToggleBtn');
-            if (swRunning) {
-                clearInterval(swInterval);
-                swElapsed += Date.now() - swStartTime;
-                swRunning = false;
-                btn.innerHTML = '<i class="fa-solid fa-play mr-1"></i> Start';
-                btn.classList.replace('bg-slate-600', 'bg-red-600');
-                btn.classList.replace('hover:bg-slate-500', 'hover:bg-red-500');
+            const input = document.getElementById('qtInput');
+            const btn = document.getElementById('qtToggleBtn');
+            const qt = appData.qt;
+
+            if (qt.running) {
+                // -> PAUSE
+                qt.running = false;
+                if (qt.mode === 'timer') {
+                    qt.elapsed = qt.endTime - Date.now(); // Speichert die verbleibenden Millisekunden
+                } else if (qt.mode === 'stopwatch') {
+                    qt.elapsed += Date.now() - qt.startTime; // Speichert die bisher vergangene Zeit
+                }
+                clearInterval(qtInterval);
+                btn.innerHTML = '<i class="fa-solid fa-play"></i> Start';
+                btn.classList.replace('bg-amber-500', 'bg-sky-600');
+                btn.classList.replace('hover:bg-amber-400', 'hover:bg-sky-500');
             } else {
-                swStartTime = Date.now();
-                swInterval = setInterval(updateStopwatch, 100);
-                swRunning = true;
-                btn.innerHTML = '<i class="fa-solid fa-pause mr-1"></i> Pause';
-                btn.classList.replace('bg-red-600', 'bg-slate-600');
-                btn.classList.replace('hover:bg-red-500', 'hover:bg-slate-500');
+                // -> START or RESUME
+                if (qt.mode === 'idle') {
+                    const mins = parseFloat(input.value);
+                    if (!isNaN(mins) && mins > 0) {
+                        // Init Timer
+                        qt.mode = 'timer';
+                        qt.endTime = Date.now() + (mins * 60000);
+                    } else {
+                        // Init Stopwatch
+                        qt.mode = 'stopwatch';
+                        qt.startTime = Date.now();
+                        qt.elapsed = 0;
+                    }
+                    input.value = ''; // Feld leeren für saubere UX
+                } else {
+                    // Resume existing
+                    if (qt.mode === 'timer') {
+                        qt.endTime = Date.now() + qt.elapsed; // rechne verbleibende Zeit neu drauf
+                    } else if (qt.mode === 'stopwatch') {
+                        qt.startTime = Date.now();
+                    }
+                }
+                
+                qt.running = true;
+                if(qtInterval) clearInterval(qtInterval);
+                qtInterval = setInterval(updateQuickTimer, 100);
+                
+                btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+                btn.classList.replace('bg-sky-600', 'bg-amber-500');
+                btn.classList.replace('hover:bg-sky-500', 'hover:bg-amber-400');
+                document.getElementById('panel-quicktimer').classList.remove('animate-pulse-red-glow');
             }
+            saveData();
+            updateQuickTimerDisplay();
         }
 
-        function resetStopwatch() {
-            clearInterval(swInterval);
-            swRunning = false;
-            swElapsed = 0;
-            lastReaPing = 0;
-            document.getElementById('globalStopwatch').innerText = '00:00';
-            const btn = document.getElementById('swToggleBtn');
-            btn.innerHTML = '<i class="fa-solid fa-play mr-1"></i> Start';
-            btn.classList.replace('bg-slate-600', 'bg-red-600');
-            btn.classList.replace('hover:bg-slate-500', 'hover:bg-red-500');
+        function resetQuickTimer() {
+            appData.qt = { mode: 'idle', endTime: 0, startTime: 0, elapsed: 0, running: false };
+            if(qtInterval) clearInterval(qtInterval);
+            saveData();
+            
+            const btn = document.getElementById('qtToggleBtn');
+            btn.innerHTML = '<i class="fa-solid fa-play"></i> Start';
+            btn.className = "flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-1.5";
+            
+            document.getElementById('qtDisplay').innerText = "00:00";
+            document.getElementById('panel-quicktimer').classList.remove('animate-pulse-red-glow');
+            document.getElementById('qtInput').value = '';
         }
 
-        function updateStopwatch() {
-            if(!swRunning) return;
-            const currentElapsed = swElapsed + (Date.now() - swStartTime);
-            document.getElementById('globalStopwatch').innerText = formatSW(currentElapsed);
+        function updateQuickTimer() {
+            const qt = appData.qt;
+            if (!qt.running) return;
 
-            if(reaMode) {
-                const totalSec = Math.floor(currentElapsed / 1000);
-                // Ping every 120 seconds
-                if(totalSec > 0 && totalSec % 120 === 0 && totalSec !== lastReaPing) {
-                    lastReaPing = totalSec;
-                    playGong();
-                    const swPanel = document.getElementById('panel-stopwatch');
-                    swPanel.classList.add('animate-pulse-red-glow');
-                    setTimeout(() => swPanel.classList.remove('animate-pulse-red-glow'), 3500);
+            if (qt.mode === 'timer') {
+                const diff = qt.endTime - Date.now();
+                if (diff <= 0) {
+                    // Timer ist abgelaufen
+                    qt.running = false;
+                    qt.mode = 'idle';
+                    clearInterval(qtInterval);
+                    document.getElementById('qtDisplay').innerText = "00:00";
+                    
+                    const panel = document.getElementById('panel-quicktimer');
+                    if(!panel.classList.contains('animate-pulse-red-glow')) {
+                        panel.classList.add('animate-pulse-red-glow');
+                        playGong();
+                    }
+                    
+                    const btn = document.getElementById('qtToggleBtn');
+                    btn.innerHTML = '<i class="fa-solid fa-play"></i> Start';
+                    btn.className = "flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs py-2 rounded-lg transition font-bold shadow-md flex items-center justify-center gap-1.5";
+                    saveData();
+                    return;
                 }
             }
+            updateQuickTimerDisplay();
         }
 
-        function toggleReaMode() {
-            reaMode = !reaMode;
-            const btn = document.getElementById('reaModeBtn');
-            if(reaMode) {
-                btn.classList.add('bg-red-200', 'dark:bg-red-900/60');
-                btn.classList.remove('glass-input');
-                btn.innerHTML = '<i class="fa-solid fa-heart-pulse animate-pulse mr-1"></i> Rea-Loop On';
-                if(!swRunning) toggleStopwatch(); 
-            } else {
-                btn.classList.remove('bg-red-200', 'dark:bg-red-900/60');
-                btn.classList.add('glass-input');
-                btn.innerHTML = '2 Min Rea-Loop';
+        function updateQuickTimerDisplay() {
+            const qt = appData.qt;
+            const display = document.getElementById('qtDisplay');
+            
+            if (qt.mode === 'idle') {
+                display.innerText = "00:00";
+                return;
             }
+
+            let ms = 0;
+            if (qt.mode === 'timer') {
+                ms = qt.running ? qt.endTime - Date.now() : qt.elapsed;
+            } else if (qt.mode === 'stopwatch') {
+                ms = qt.running ? qt.elapsed + (Date.now() - qt.startTime) : qt.elapsed;
+            }
+
+            if (ms < 0) ms = 0;
+
+            const totalSeconds = Math.floor(ms / 1000);
+            const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+            const s = (totalSeconds % 60).toString().padStart(2, '0');
+            
+            display.innerText = `${m}:${s}`;
         }
 
-        // Vital Management
-        function addVitalsCard() {
-            appData.vitals.unshift({ id: Date.now(), patient: '', allergies: '', rr: '', hf: '', af: '', spo2: '', temp: '', misc: '' });
-            saveData(); renderVitals();
-        }
-        function updateVit(id, field, value) {
-            const card = appData.vitals.find(v => v.id === id);
-            if(card) { card[field] = value; saveData(); }
-        }
-        function addAllergyToCard(id, val) {
-            const card = appData.vitals.find(v => v.id === id);
-            if(card) {
-                let current = card.allergies.trim();
-                if(current === 'Keine' || current === '') card.allergies = val;
-                else if(!current.includes(val)) card.allergies = current + ', ' + val;
-                saveData(); renderVitals();
-            }
-        }
-        function deleteVitals(id) {
-            if(appData.vitals.length === 1) {
-                appData.vitals = [{ id: Date.now(), patient: '', allergies: '', rr: '', hf: '', af: '', spo2: '', temp: '', misc: '' }];
-            } else {
-                appData.vitals = appData.vitals.filter(v => v.id !== id);
-            }
-            saveData(); renderVitals();
-        }
-        function copyVitals(id) {
-            const v = appData.vitals.find(x => x.id === id);
-            if(!v) return;
-            let text = `VITALWERTE:\nPat: ${v.patient}\nALLERGIEN: ${v.allergies || 'Keine bekannt'}\nRR: ${v.rr} | HF: ${v.hf} | AF: ${v.af} | SpO2: ${v.spo2}% | Temp: ${v.temp}°C\nSonst: ${v.misc}\nZeit: ${new Date().toLocaleTimeString('de-DE').substring(0,5)}`;
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('copyToast');
-                toast.classList.remove('hidden');
-                setTimeout(() => toast.classList.add('hidden'), 2000);
+        // ----------------------------------------------------
+        // MASTER LOOP (Timers & Transports)
+        // ----------------------------------------------------
+        function updateAllTimers() {
+            let needsRender = false;
+            const now = Date.now();
+            
+            appData.timers.forEach(timer => {
+                const elapsed = now - timer.startTime;
+                const wasOverdue = timer.isOverdue;
+                timer.isOverdue = elapsed >= timer.durationMs;
+                if (timer.isOverdue !== wasOverdue) {
+                    needsRender = true;
+                    if (timer.isOverdue) playGong();
+                }
             });
-        }
-        function renderVitals() {
-            const container = document.getElementById('vitalsContainer');
-            container.innerHTML = '';
-            appData.vitals.forEach(v => {
-                const card = document.createElement('div');
-                card.className = "p-4 rounded-xl border border-pink-200 dark:border-pink-900/40 bg-white/50 dark:bg-slate-800/40 space-y-3 relative transition-all shadow-sm";
-                card.innerHTML = `
-                    <button onclick="deleteVitals(${v.id})" class="absolute top-2 right-2 text-slate-400 hover:text-red-500 transition"><i class="fa-solid fa-trash text-xs"></i></button>
-                    <input type="text" placeholder="Patient / Raum" value="${v.patient}" oninput="updateVit(${v.id}, 'patient', this.value)" class="w-full text-xs font-bold bg-transparent outline-none border-b border-pink-100 dark:border-pink-900/30 pb-1 mb-2">
-                    <div>
-                        <input type="text" placeholder="Allergien..." value="${v.allergies}" oninput="updateVit(${v.id}, 'allergies', this.value)" class="w-full text-[10px] p-2 rounded bg-red-50/50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 outline-none">
-                        <div class="flex flex-wrap gap-1 mt-1.5">
-                            ${['Peni', 'Nova', 'Latex', 'KM'].map(a => `<button onclick="addAllergyToCard(${v.id}, '${a}')" class="text-[9px] px-1.5 py-0.5 rounded border border-red-200 dark:border-red-900 text-red-700 dark:text-red-400 bg-white dark:bg-black/20">${a}</button>`).join('')}
-                            <button onclick="updateVit(${v.id}, 'allergies', 'Keine'); renderVitals()" class="text-[9px] px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-900 text-emerald-700 bg-emerald-50 dark:bg-black/20">Keine</button>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="text-center"><div class="text-[8px] uppercase text-slate-400">RR</div><input type="text" value="${v.rr}" oninput="updateVit(${v.id}, 'rr', this.value)" placeholder="120/80" class="w-full text-center text-xs font-mono bg-white/50 dark:bg-black/20 rounded p-1 outline-none"></div>
-                        <div class="text-center"><div class="text-[8px] uppercase text-slate-400">HF</div><input type="number" value="${v.hf}" oninput="updateVit(${v.id}, 'hf', this.value)" placeholder="80" class="w-full text-center text-xs font-mono bg-white/50 dark:bg-black/20 rounded p-1 outline-none"></div>
-                        <div class="text-center"><div class="text-[8px] uppercase text-slate-400">AF</div><input type="number" value="${v.af}" oninput="updateVit(${v.id}, 'af', this.value)" placeholder="15" class="w-full text-center text-xs font-mono bg-white/50 dark:bg-black/20 rounded p-1 outline-none"></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="text-center"><div class="text-[8px] uppercase text-slate-400">SpO2</div><input type="number" value="${v.spo2}" oninput="updateVit(${v.id}, 'spo2', this.value)" placeholder="98" class="w-full text-center text-xs font-mono bg-white/50 dark:bg-black/20 rounded p-1 outline-none"></div>
-                        <div class="text-center"><div class="text-[8px] uppercase text-slate-400">Temp</div><input type="number" step="0.1" value="${v.temp}" oninput="updateVit(${v.id}, 'temp', this.value)" placeholder="37.0" class="w-full text-center text-xs font-mono bg-white/50 dark:bg-black/20 rounded p-1 outline-none"></div>
-                    </div>
-                    <input type="text" placeholder="Sonstiges (BZ, GCS...)" value="${v.misc}" oninput="updateVit(${v.id}, 'misc', this.value)" class="w-full text-[10px] p-2 bg-transparent border border-slate-200 dark:border-slate-700 rounded outline-none">
-                    <button onclick="copyVitals(${v.id})" class="w-full py-2 bg-slate-800 text-white rounded-lg text-[10px] font-bold shadow hover:bg-slate-700 transition flex items-center justify-center gap-2"><i class="fa-regular fa-copy"></i> Für Orbis kopieren</button>
-                `;
-                container.appendChild(card);
-            });
+            
+            if (needsRender) {
+                saveData();
+                renderTimers();
+            } else {
+                updateTimerDisplays(now);
+            }
         }
 
-        // Timer, Transport, Task Functions
-        function addTimer(m) {
-            appData.timers.push({ id: Date.now(), patient: document.getElementById('timerPatient').value || '?', task: document.getElementById('timerTask').value || 'Warten', startTime: Date.now(), durationMs: m*60000, isOverdue: false });
+        function formatTimeDiff(ms) {
+            const totalSeconds = Math.floor(Math.abs(ms) / 1000);
+            const m = Math.floor(totalSeconds / 60);
+            const s = totalSeconds % 60;
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // Feature: Timers
+        function addTimer(minutes) {
+            const patient = document.getElementById('timerPatient').value || "Unbekannt";
+            const task = document.getElementById('timerTask').value || "Labor / Warten";
+            appData.timers.push({ id: Date.now(), patient: patient, task: task, startTime: Date.now(), durationMs: minutes * 60 * 1000, isOverdue: false });
             saveData(); renderTimers();
+            document.getElementById('timerPatient').value = ""; document.getElementById('timerTask').value = ""; document.getElementById('timerPatient').focus();
         }
         function addCustomTimer() {
-            const input = document.getElementById('timerCustom');
-            const mins = parseInt(input.value, 10);
-            if (!isNaN(mins) && mins > 0) { addTimer(mins); input.value = ''; }
-        }
-        function addTransport() {
-            appData.transports.push({ id: Date.now(), patient: document.getElementById('transPatient').value || '?', ziel: document.getElementById('transZiel').value || '?', targetMs: Date.now(), status: 'waiting' });
-            saveData(); renderTransports();
-        }
-        function addTask() {
-            appData.tasks.unshift({ id: Date.now(), text: document.getElementById('newTaskInput').value, done: false });
-            document.getElementById('newTaskInput').value = ''; saveData(); renderTasks();
-        }
-        function saveNotes() { appData.notes = document.getElementById('notesArea').value; saveData(); }
-
-        function renderTimers() {
-            const list = document.getElementById('timerList');
-            list.innerHTML = appData.timers.length ? '' : '<div class="text-center text-xs opacity-40 py-4">Keine Timer</div>';
-            appData.timers.forEach(t => {
-                const el = document.createElement('div');
-                el.className = `p-3 rounded-xl border ${t.isOverdue ? 'bg-red-50 dark:bg-red-900/20 border-red-300' : 'bg-white dark:bg-slate-800 border-white/50'}`;
-                el.innerHTML = `<div class="flex justify-between font-bold text-xs"><span>${t.patient}</span><button onclick="deleteTimer(${t.id})">×</button></div><div class="text-[10px] text-helios-600">${t.task}</div><div class="timer-display text-2xl font-mono font-bold mt-2" data-id="${t.id}">00:00</div>`;
-                list.appendChild(el);
-            });
+            const mins = parseInt(document.getElementById('timerCustom').value);
+            if(mins > 0) { addTimer(mins); document.getElementById('timerCustom').value = ""; }
         }
         function deleteTimer(id) { appData.timers = appData.timers.filter(t => t.id !== id); saveData(); renderTimers(); }
-        
+        function renderTimers() {
+            const list = document.getElementById('timerList');
+            list.innerHTML = '';
+            if(appData.timers.length === 0) { list.innerHTML = '<div class="text-center text-slate-500 text-sm py-8 font-mono font-bold">Keine aktiven Timer</div>'; return; }
+            const sortedTimers = [...appData.timers].sort((a, b) => {
+                if (a.isOverdue && !b.isOverdue) return -1;
+                if (!a.isOverdue && b.isOverdue) return 1;
+                return (a.durationMs - (Date.now() - a.startTime)) - (b.durationMs - (Date.now() - b.startTime));
+            });
+            sortedTimers.forEach(timer => {
+                const el = document.createElement('div');
+                const stateClasses = timer.isOverdue ? "bg-red-100/60 border-red-300 dark:bg-red-900/40 dark:border-red-500/60 animate-pulse-red-glow" : "bg-white/60 border-white/80 dark:bg-slate-800/60 dark:border-white/20 dark:animate-pulse-glow";
+                el.className = `p-4 rounded-xl relative transition-all duration-300 overflow-hidden shadow-sm backdrop-blur-md border ${stateClasses}`;
+                el.innerHTML = `
+                    <div class="flex justify-between items-start mb-2 relative z-10">
+                        <div><div class="font-bold text-sm text-slate-900 dark:text-white drop-shadow-sm">${timer.patient}</div><div class="text-xs font-bold text-helios-700 dark:text-helios-400 mt-0.5 uppercase tracking-wide">${timer.task}</div></div>
+                        <button onclick="deleteTimer(${timer.id})" class="text-slate-500 hover:text-white transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-800/20"><i class="fa-solid fa-times"></i></button>
+                    </div>
+                    <div class="flex justify-between items-end mt-4 relative z-10">
+                        <div class="text-xs font-mono font-bold px-2 py-1 rounded bg-white/60 border border-white/80 dark:bg-black/40 shadow-sm text-slate-700 dark:text-slate-200">Ziel: ${timer.durationMs / 60000}m</div>
+                        <div class="font-mono font-bold text-3xl tracking-wider timer-display drop-shadow-sm ${timer.isOverdue ? 'text-red-700 dark:text-red-400 dark:text-glow-red' : 'text-helios-700 dark:text-helios-400 dark:text-glow-green'}" data-id="${timer.id}">--:--</div>
+                    </div>
+                    ${!timer.isOverdue ? `<div class="absolute bottom-0 left-0 h-1.5 bg-slate-200/50 dark:bg-helios-900/50 w-full"><div class="bg-helios-500 h-full progress-bar shadow-[0_0_10px_rgba(16,185,129,0.8)] transition-all duration-1000 ease-linear" data-id="${timer.id}" style="width: 0%;"></div></div>` : `<div class="absolute bottom-0 left-0 h-1.5 bg-red-500 w-full shadow-[0_0_15px_rgba(239,68,68,1)]"></div>`}
+                `;
+                list.appendChild(el);
+            });
+            updateTimerDisplays(Date.now());
+        }
+        function updateTimerDisplays(now) {
+            appData.timers.forEach(timer => {
+                const display = document.querySelector(`.timer-display[data-id="${timer.id}"]`), progress = document.querySelector(`.progress-bar[data-id="${timer.id}"]`);
+                if(display) {
+                    const diff = timer.durationMs - (now - timer.startTime);
+                    display.innerText = diff <= 0 ? "+" + formatTimeDiff(Math.abs(diff)) : formatTimeDiff(diff);
+                    if(progress && diff > 0) progress.style.width = `${((now - timer.startTime) / timer.durationMs) * 100}%`;
+                }
+            });
+            appData.transports.forEach(t => {
+                if (t.status === 'done') return;
+                const display = document.querySelector(`.trans-timer-display[data-id="${t.id}"]`), progress = document.querySelector(`.trans-progress-bar[data-id="${t.id}"]`), transElement = document.querySelector(`.trans-item[data-id="${t.id}"]`);
+                if(display) {
+                    if (t.isAsap) {
+                        display.innerText = "+" + formatTimeDiff(now - t.targetMs); display.classList.add('text-red-600', 'dark:text-red-400');
+                        if(progress) progress.style.width = `${Math.min(((now - t.targetMs) / 1800000) * 100, 100)}%`;
+                        if(transElement && t.status === 'waiting') { transElement.classList.add('animate-pulse-border-red'); transElement.classList.remove('animate-pulse-border-indigo'); }
+                    } else {
+                        const diff = t.targetMs - now;
+                        if(diff <= 0) {
+                            display.innerText = "+" + formatTimeDiff(Math.abs(diff)); display.classList.add('text-red-600', 'dark:text-red-400'); display.classList.remove('text-indigo-700');
+                            if(progress) progress.style.width = '100%';
+                            if(transElement && t.status === 'waiting') { transElement.classList.add('animate-pulse-border-red'); transElement.classList.remove('animate-pulse-border-indigo'); }
+                        } else {
+                            display.innerText = formatTimeDiff(diff); display.classList.remove('text-red-600', 'dark:text-red-400'); display.classList.add('text-indigo-700', 'dark:text-indigo-400');
+                            if(progress) progress.style.width = `${Math.min(Math.max(((now - t.id) / (t.targetMs - t.id)) * 100, 0), 100)}%`;
+                            if(transElement && t.status === 'waiting') { transElement.classList.add('animate-pulse-border-indigo'); transElement.classList.remove('animate-pulse-border-red'); }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Feature: Transports
+        function addTransport() {
+            const patient = document.getElementById('transPatient').value, ziel = document.getElementById('transZiel').value, timeInput = document.getElementById('transTime').value;
+            if(!patient || !ziel) { alert("Patient und Ziel müssen ausgefüllt sein."); return; }
+            let targetMs = Date.now(), isAsap = true;
+            if(timeInput) { const [hours, mins] = timeInput.split(':'); const d = new Date(); d.setHours(parseInt(hours), parseInt(mins), 0, 0); targetMs = d.getTime(); isAsap = false; }
+            appData.transports.push({ id: Date.now(), patient: patient, ziel: ziel, timeString: timeInput || "ASAP", targetMs: targetMs, isAsap: isAsap, status: "waiting" });
+            saveData(); renderTransports();
+            document.getElementById('transPatient').value = ""; document.getElementById('transZiel').value = ""; document.getElementById('transTime').value = "";
+        }
+        function updateTransportStatus(id, newStatus) { const t = appData.transports.find(x => x.id === id); if(t) { t.status = newStatus; saveData(); renderTransports(); } }
+        function deleteTransport(id) { appData.transports = appData.transports.filter(t => t.id !== id); saveData(); renderTransports(); }
         function renderTransports() {
             const list = document.getElementById('transportList');
-            list.innerHTML = appData.transports.length ? '' : '<div class="text-center text-xs opacity-40 py-4">Keine Transporte</div>';
-            appData.transports.forEach(t => {
-                const el = document.createElement('div');
-                el.className = `p-3 rounded-xl border border-indigo-200 dark:border-indigo-900/40 bg-white/50 dark:bg-slate-800/40 ${t.status === 'progress' ? 'animate-pulse-border-amber' : 'animate-pulse-border-indigo'}`;
-                el.innerHTML = `<div class="flex justify-between text-xs font-bold"><span>${t.patient}</span><button onclick="deleteTrans(${t.id})">×</button></div><div class="text-[10px] mt-1"><i class="fa-solid fa-location-dot"></i> ${t.ziel}</div><div class="mt-2 flex gap-1"><button onclick="updTrans(${t.id},'progress')" class="bg-amber-500/20 text-amber-700 px-2 py-1 rounded text-[9px] font-bold"><i class="fa-solid fa-truck-fast"></i></button><button onclick="deleteTrans(${t.id})" class="bg-helios-500/20 text-helios-700 px-2 py-1 rounded text-[9px] font-bold"><i class="fa-solid fa-check"></i></button></div>`;
-                list.appendChild(el);
-            });
-        }
-        function deleteTrans(id) { appData.transports = appData.transports.filter(t => t.id !== id); saveData(); renderTransports(); }
-        function updTrans(id, s) { const t = appData.transports.find(x => x.id === id); if(t) t.status = s; saveData(); renderTransports(); }
-        
-        // Task Drag & Drop Variables
-        let draggedTaskId = null;
-
-        function renderTasks() {
-            const list = document.getElementById('taskList');
             list.innerHTML = '';
-            appData.tasks.forEach(task => {
-                const el = document.createElement('div');
-                el.className = `task-item p-2 rounded border text-xs flex gap-2 items-center cursor-grab active:cursor-grabbing ${task.done ? 'opacity-50 line-through bg-white/30 dark:bg-white/5' : 'bg-white dark:bg-slate-800'}`;
-                el.dataset.id = task.id;
-                
-                if (!task.done) {
-                    el.draggable = true;
-                    el.addEventListener('dragstart', handleTaskDragStart);
-                    el.addEventListener('dragover', handleTaskDragOver);
-                    el.addEventListener('dragenter', handleTaskDragEnter);
-                    el.addEventListener('dragleave', handleTaskDragLeave);
-                    el.addEventListener('drop', handleTaskDrop);
-                    el.addEventListener('dragend', handleTaskDragEnd);
-                }
-
-                el.innerHTML = `<input type="checkbox" ${task.done?'checked':''} onclick="toggleTask(${task.id})"><span class="flex-1 pointer-events-none">${task.text}</span><button onclick="delTask(${task.id})" class="hover:text-red-500">×</button>`;
+            if(appData.transports.length === 0) { list.innerHTML = '<div class="text-center text-slate-500 text-sm py-8 font-mono font-bold">Keine Transporte disponiert</div>'; return; }
+            appData.transports.forEach(t => {
+                let statusColor = "bg-white/60 border-white/80 dark:bg-slate-800/60 dark:border-white/20", badgeColor = "bg-white/80 border-slate-300 dark:bg-black/40", pulseClass = "";
+                if(t.status === 'progress') { statusColor = "bg-amber-100/60 border-amber-300 text-amber-900 dark:bg-amber-900/40"; badgeColor = "bg-amber-200/80 border-amber-400 text-amber-800"; pulseClass = "animate-pulse-border-amber"; } 
+                else if(t.status === 'done') { statusColor = "bg-helios-100/50 border-helios-300 text-helios-900 opacity-70"; badgeColor = "bg-helios-200/80 border-helios-400"; } 
+                else { pulseClass = (t.isAsap || t.targetMs <= Date.now()) ? "animate-pulse-border-red" : "animate-pulse-border-indigo"; }
+                const el = document.createElement('div'); el.className = `trans-item p-3 rounded-xl border flex flex-col gap-2 transition-all shadow-sm backdrop-blur-md relative overflow-hidden ${statusColor} ${pulseClass}`; el.dataset.id = t.id;
+                const timerHtml = t.status !== 'done' ? `<div class="font-mono text-sm font-bold trans-timer-display" data-id="${t.id}">--:--</div>` : `<div class="font-mono text-sm font-bold opacity-70">Erledigt</div>`;
+                let pBar = '';
+                if(t.status !== 'done') pBar = `<div class="absolute bottom-0 left-0 h-1.5 bg-slate-200/50 w-full rounded-b-xl overflow-hidden"><div class="${t.isAsap ? 'bg-red-500' : 'bg-indigo-500'} h-full trans-progress-bar transition-all duration-1000 ease-linear" data-id="${t.id}" style="width: 0%;"></div></div>`;
+                el.innerHTML = `
+                    <div class="flex justify-between items-start relative z-10"><div class="font-bold text-sm">${t.patient}</div><div class="flex items-center gap-2">${timerHtml}<div class="font-mono text-xs font-bold px-2 py-0.5 rounded border shadow-sm ${badgeColor}">${t.timeString}</div></div></div>
+                    <div class="text-sm font-bold opacity-90 mt-1 relative z-10"><i class="fa-solid fa-location-dot mr-1.5"></i> ${t.ziel}</div>
+                    <div class="flex justify-between items-center mt-2 pt-3 border-t border-black/10 relative z-10">
+                        <div class="flex gap-1">
+                            ${t.status !== 'progress' ? `<button onclick="updateTransportStatus(${t.id}, 'progress')" class="w-8 h-8 rounded-lg bg-amber-200/60 hover:bg-amber-300 text-amber-700"><i class="fa-solid fa-truck-fast"></i></button>` : ''}
+                            ${t.status !== 'done' ? `<button onclick="updateTransportStatus(${t.id}, 'done')" class="w-8 h-8 rounded-lg bg-helios-200/60 hover:bg-helios-300 text-helios-700"><i class="fa-solid fa-check"></i></button>` : ''}
+                        </div>
+                        <button onclick="deleteTransport(${t.id})" class="w-8 h-8 flex justify-center items-center rounded-lg text-slate-500 hover:text-red-600 hover:bg-white/50"><i class="fa-solid fa-trash"></i></button>
+                    </div>${pBar}`;
                 list.appendChild(el);
             });
+            updateTimerDisplays(Date.now());
         }
-        function toggleTask(id) { 
-            const index = appData.tasks.findIndex(t => t.id === id);
-            if(index !== -1) {
-                const t = appData.tasks[index];
-                t.done = !t.done; 
-                appData.tasks.splice(index, 1);
-                if (t.done) appData.tasks.push(t); else appData.tasks.unshift(t);
-                saveData(); renderTasks(); 
-            }
-        }
-        function delTask(id) { appData.tasks = appData.tasks.filter(t => t.id !== id); saveData(); renderTasks(); }
 
-        // Task Drag Handlers
-        function handleTaskDragStart(e) {
-            draggedTaskId = Number(this.dataset.id);
-            e.dataTransfer.effectAllowed = 'move';
-            setTimeout(() => this.classList.add('task-dragging'), 0);
+        // Feature: Vitals
+        function addAllergy(val) { const i = document.getElementById('vitAllergies'); let c = i.value.trim(); if (c === 'Keine bekannt' || c === '') i.value = val; else if (!c.includes(val)) i.value = c + ', ' + val; }
+        function setAllergy(val) { document.getElementById('vitAllergies').value = val; }
+        function clearVitals() { ['vitPatient','vitAllergies','vitRR','vitHF','vitAF','vitSpO2','vitTemp','vitMisc'].forEach(id => document.getElementById(id).value = ''); }
+        function copyVitals() {
+            let t = "VITALWERTE:\n";
+            const f = (id, lbl) => { const v = document.getElementById(id).value; if(v) t += `${lbl}: ${v}\n`; };
+            f('vitPatient','Patient'); f('vitAllergies','ALLERGIEN'); f('vitRR','RR'); f('vitHF','HF'); f('vitAF','AF'); f('vitSpO2','SpO2'); f('vitTemp','Temp'); f('vitMisc','Zusatz');
+            t += `Zeit: ${new Date().toLocaleTimeString('de-DE').substring(0,5)} Uhr`;
+            navigator.clipboard.writeText(t).then(() => { const toast = document.getElementById('copyToast'); toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 2500); }).catch(err => {
+                const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); const toast = document.getElementById('copyToast'); toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 2500); } catch (e) {} document.body.removeChild(ta);
+            });
         }
-        function handleTaskDragOver(e) { e.preventDefault(); return false; }
-        function handleTaskDragEnter(e) { if (Number(this.dataset.id) !== draggedTaskId) this.classList.add('task-drag-over'); }
-        function handleTaskDragLeave(e) { this.classList.remove('task-drag-over'); }
+
+        // Feature: Notes & Checkliste
+        function saveNotes() { appData.notes = document.getElementById('notesArea').value; saveData(); }
+        let draggedTaskId = null;
+        function addTask() { const i = document.getElementById('newTaskInput'), text = i.value.trim(); if(!text) return; appData.tasks.unshift({id: Date.now(), text: text, done: false}); i.value = ''; saveData(); renderTasks(); }
+        function toggleTask(id) { const i = appData.tasks.findIndex(t => t.id === id); if(i !== -1) { appData.tasks[i].done = !appData.tasks[i].done; const t = appData.tasks.splice(i, 1)[0]; if (t.done) appData.tasks.push(t); else appData.tasks.unshift(t); saveData(); renderTasks(); } }
+        function deleteTask(id) { appData.tasks = appData.tasks.filter(t => t.id !== id); saveData(); renderTasks(); }
+        
+        function handleTaskDragStart(e) { draggedTaskId = Number(this.dataset.id); e.dataTransfer.effectAllowed = 'move'; setTimeout(() => this.classList.add('task-dragging'), 0); }
         function handleTaskDrop(e) {
-            e.stopPropagation();
-            this.classList.remove('task-drag-over');
-            const dropTargetId = Number(this.dataset.id);
+            e.stopPropagation(); this.classList.remove('task-drag-over'); const dropTargetId = Number(this.dataset.id);
             if (draggedTaskId && draggedTaskId !== dropTargetId) {
-                const draggedIdx = appData.tasks.findIndex(t => t.id === draggedTaskId);
-                const targetIdx = appData.tasks.findIndex(t => t.id === dropTargetId);
-                if (draggedIdx !== -1 && targetIdx !== -1) {
-                    const [removedItem] = appData.tasks.splice(draggedIdx, 1);
-                    appData.tasks.splice(targetIdx, 0, removedItem);
-                    saveData(); renderTasks();
-                }
+                const dIdx = appData.tasks.findIndex(t => t.id === draggedTaskId), tIdx = appData.tasks.findIndex(t => t.id === dropTargetId);
+                if (dIdx !== -1 && tIdx !== -1) { const [r] = appData.tasks.splice(dIdx, 1); appData.tasks.splice(tIdx, 0, r); saveData(); renderTasks(); }
             }
             return false;
         }
-        function handleTaskDragEnd(e) {
-            this.classList.remove('task-dragging');
-            document.querySelectorAll('.task-item').forEach(el => el.classList.remove('task-drag-over'));
-            draggedTaskId = null;
-        }
+        function handleTaskDragEnd() { this.classList.remove('task-dragging'); document.querySelectorAll('.task-item').forEach(el => el.classList.remove('task-drag-over')); draggedTaskId = null; }
 
-        function updateAllTimers() {
-            const now = Date.now();
-            appData.timers.forEach(t => {
-                const elapsed = now - t.startTime;
-                const diff = t.durationMs - elapsed;
-                const display = document.querySelector(`.timer-display[data-id="${t.id}"]`);
-                if(display) {
-                    const abs = Math.abs(diff);
-                    const m = Math.floor(abs/60000).toString().padStart(2,'0');
-                    const s = Math.floor((abs%60000)/1000).toString().padStart(2,'0');
-                    display.innerText = (diff < 0 ? '+' : '') + `${m}:${s}`;
-                    if(diff < 0 && !t.isOverdue) { t.isOverdue = true; playGong(); renderTimers(); }
-                }
+        function renderTasks() {
+            const list = document.getElementById('taskList'); list.innerHTML = '';
+            if(appData.tasks.length === 0) { list.innerHTML = '<div class="text-center text-slate-500 py-4 font-mono font-bold">Keine Aufgaben</div>'; return; }
+            appData.tasks.forEach(task => {
+                const el = document.createElement('div');
+                const textStyle = task.done ? "line-through text-slate-500" : "font-medium";
+                const bgStyle = task.done ? "bg-white/30 dark:bg-white/5 opacity-60" : "bg-white/70 dark:bg-slate-800/60 cursor-grab active:cursor-grabbing backdrop-blur-md shadow-sm";
+                el.className = `task-item flex items-center gap-3 p-3 rounded-lg border ${bgStyle}`; el.dataset.id = task.id;
+                if (!task.done) { el.draggable = true; el.addEventListener('dragstart', handleTaskDragStart); el.addEventListener('dragover', e => {e.preventDefault(); return false;}); el.addEventListener('dragenter', function() { if(Number(this.dataset.id) !== draggedTaskId) this.classList.add('task-drag-over');}); el.addEventListener('dragleave', function() {this.classList.remove('task-drag-over')}); el.addEventListener('drop', handleTaskDrop); el.addEventListener('dragend', handleTaskDragEnd); }
+                el.innerHTML = `${!task.done ? `<div class="text-slate-400 cursor-grab"><i class="fa-solid fa-grip-vertical"></i></div>` : `<div class="w-2"></div>`}<button onclick="toggleTask(${task.id})" class="text-xl hover:scale-110">${task.done ? "<i class='fa-solid fa-circle-check text-helios-600'></i>" : "<i class='fa-regular fa-circle text-slate-400'></i>"}</button><span class="flex-1 text-sm ${textStyle}">${task.text}</span><button onclick="deleteTask(${task.id})" class="text-slate-400 hover:text-red-600 p-1"><i class="fa-solid fa-trash"></i></button>`;
+                list.appendChild(el);
             });
         }
     </script>
